@@ -1,8 +1,8 @@
 module Data.OpenWitness
 (
-	UniqueWitness,
-	RealWorld,IOWitness,newUniqueWitness,
-	UW,newUniqueWitnessUW,runUW,uwToIO
+	OpenWitness,
+	RealWorld,IOWitness,newIOWitness,
+	OW,newOpenWitnessOW,runOW,owToIO
 ) where
 {
 	import Data.Witness;
@@ -14,47 +14,47 @@ module Data.OpenWitness
 	unsafeSameType :: SameType a b;
 	unsafeSameType = MkSameType unsafeCoerce;
 
-	newtype UniqueWitness s a = MkUniqueWitness Integer;
+	newtype OpenWitness s a = MkOpenWitness Integer;
 	
-	instance Eq (UniqueWitness s a) where
+	instance Eq (OpenWitness s a) where
 	{
-		(MkUniqueWitness ua) == (MkUniqueWitness ub) = ua == ub;
+		(MkOpenWitness ua) == (MkOpenWitness ub) = ua == ub;
 	};
 	
-	instance Witness (UniqueWitness s) where
+	instance Witness (OpenWitness s) where
 	{
-		matchWitness (MkUniqueWitness ua) (MkUniqueWitness ub) = 
+		matchWitness (MkOpenWitness ua) (MkOpenWitness ub) = 
 			if ua == ub then Just unsafeSameType else Nothing;
 	};
 
 	data RealWorld;
 
-	type IOWitness = UniqueWitness RealWorld;
+	type IOWitness = OpenWitness RealWorld;
 
-	uwSource :: MVar Integer;
-	{-# NOINLINE uwSource #-};
-	uwSource = unsafePerformIO (newMVar 0);
+	ioWitnessSource :: MVar Integer;
+	{-# NOINLINE ioWitnessSource #-};
+	ioWitnessSource = unsafePerformIO (newMVar 0);
 
-	newUniqueWitness :: forall a. IO (IOWitness a);
-	newUniqueWitness = do
+	newIOWitness :: forall a. IO (IOWitness a);
+	newIOWitness = do
 	{
-		val <- takeMVar uwSource;
-		putMVar uwSource (val + 1);
-		return (MkUniqueWitness val);
+		val <- takeMVar ioWitnessSource;
+		putMVar ioWitnessSource (val + 1);
+		return (MkOpenWitness val);
 	};
 	
-	type UWState = Integer;
+	type OWState = Integer;
 	
-	newtype UW s a = MkUW (State UWState a) deriving (Functor,Monad,MonadFix);
+	newtype OW s a = MkOW (State OWState a) deriving (Functor,Monad,MonadFix);
 	
-	runUW :: forall a. (forall s. UW s a) -> a;
-	runUW uw = (\(MkUW st) -> evalState st 0) uw;
+	runOW :: forall a. (forall s. OW s a) -> a;
+	runOW uw = (\(MkOW st) -> evalState st 0) uw;
 	
-	newUniqueWitnessUW :: forall s a. UW s (UniqueWitness s a);
-	newUniqueWitnessUW = MkUW (State (\val -> (MkUniqueWitness val,val+1)));
+	newOpenWitnessOW :: forall s a. OW s (OpenWitness s a);
+	newOpenWitnessOW = MkOW (State (\val -> (MkOpenWitness val,val+1)));
 	
-	uwToIO :: UW RealWorld a -> IO a;
-	uwToIO (MkUW st) = modifyMVar uwSource (\start -> let
+	owToIO :: OW RealWorld a -> IO a;
+	owToIO (MkOW st) = modifyMVar ioWitnessSource (\start -> let
 	{
 		(a,count) = runState st start;
 	} in return (count,a));
