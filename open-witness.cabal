@@ -9,6 +9,7 @@ Extensions:		RankNTypes EmptyDataDecls GeneralizedNewtypeDeriving
 Exposed-Modules:
 	Data.OpenWitness
 	Data.OpenWitness.WitnessDict
+	Data.OpenWitness.ST
 Other-Modules:
 GHC-Options: -Wall -Werror 
 -- -XGADTs
