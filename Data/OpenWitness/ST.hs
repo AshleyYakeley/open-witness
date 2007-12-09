@@ -1,4 +1,3 @@
-{-# OPTIONS -fglasgow-exts -Wall -Werror #-}
 module Data.OpenWitness.ST
 (
 	ST,runST,fixST,
