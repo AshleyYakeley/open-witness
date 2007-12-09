@@ -1,4 +1,4 @@
-module Data.OpenWitness.WitnessDict
+module Data.OpenWitness.OpenDict
 (
 	OpenDict,emptyOpenDict,
 	OpenKey,openKeyLookup,openKeyReplace,openKeyModify,openKeyNew

@@ -8,7 +8,7 @@ Synopsis:		open witnesses
 Extensions:		RankNTypes EmptyDataDecls GeneralizedNewtypeDeriving
 Exposed-Modules:
 	Data.OpenWitness
-	Data.OpenWitness.WitnessDict
+	Data.OpenWitness.OpenDict
 	Data.OpenWitness.ST
 Other-Modules:
 GHC-Options: -Wall -Werror 

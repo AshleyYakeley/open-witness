@@ -7,7 +7,7 @@ module Data.OpenWitness.ST
 ) where
 {
 	import Data.OpenWitness;
-	import Data.OpenWitness.WitnessDict;
+	import Data.OpenWitness.OpenDict;
 	import Control.Monad.State;
 	
 	newtype ST s a = MkST (StateT (OpenDict s) (OW s) a) deriving (Functor,Monad,MonadFix);
