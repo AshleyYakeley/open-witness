@@ -24,13 +24,12 @@ install: build haddock
 
 
 
-#SOURCES=SameType.hs Witness.hs UniqueWitness.hs UniqueDict.hs ST.hs Object.hs Typeable.hs Dynamic.hs Unsafe.hs Main.hs
+SOURCES=Object.hs Unsafe.hs Main.hs
+run: Test
+	./Test
 
-#run: Test
-#	./Test
+Test: ${SOURCES}
+	ghc -hide-all-packages -package base -package mtl -package witness -package open-witness -fglasgow-exts -o Test ${SOURCES}
 
-#Test: ${SOURCES}
-#	ghc -package mtl -package witness -o Test ${SOURCES}
-
-#clean:
-#	rm -f *.o *.hi Test
+Test-clean:
+	rm -f *.o *.hi Test
