@@ -8,8 +8,8 @@ module Object where
 	matchObject :: OpenWitness s b -> Object s -> Maybe b;
 	matchObject uqb (MkObject uqa a) = do
 	{
-		st <- matchWitness uqa uqb;
-		return (mapSameType st a);
+		MkSameType <- matchWitness uqa uqb;
+		return a;
 	};
 
 	makeConversions :: OpenWitness s b -> (b -> Object s,Object s -> Maybe b);

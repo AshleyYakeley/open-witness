@@ -32,9 +32,9 @@ module Data.OpenWitness.Typeable where
 		matchWitness (SimpleTypeRep wa) (SimpleTypeRep wb) = matchWitness wa wb;
 		matchWitness (ApplyTypeRep tfa ta) (ApplyTypeRep tfb tb) = do
 		{
-			stf <- matchTypeRep1 tfa tfb;
-			starg <- matchWitness ta tb;
-			return (apply1SameType stf starg);
+			MkSameType <- matchTypeRep1 tfa tfb;
+			MkSameType <- matchWitness ta tb;
+			return MkSameType;
 		};
 		matchWitness _ _ = Nothing;
 	};
@@ -47,17 +47,17 @@ module Data.OpenWitness.Typeable where
 		rep :: TypeRep a;
 	};
 
-	cast :: (Typeable a,Typeable b) => a -> Maybe b;
+	cast :: forall a b. (Typeable a,Typeable b) => a -> Maybe b;
 	cast a = do
 	{
-		st <- matchWitness rep rep;
-		return (mapSameType st a);
+		MkSameType :: SameType a b <- matchWitness rep rep;
+		return a;
 	};
 
-	gcast :: (Typeable a,Typeable b) => c a -> Maybe (c b);
+	gcast :: forall a b c. (Typeable a,Typeable b) => c a -> Maybe (c b);
 	gcast ca = do
 	{
-		st <- matchWitness rep rep;
-		return (unSameType st ca);
+		MkSameType :: SameType a b <- matchWitness rep rep;
+		return ca;
 	};
 }

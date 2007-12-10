@@ -15,11 +15,11 @@ module Data.OpenWitness.Dynamic where
 		_ -> def;
 	};
 
-	fromDynamic :: Typeable a => Dynamic -> Maybe a;
+	fromDynamic :: forall a. Typeable a => Dynamic -> Maybe a;
 	fromDynamic (MkDynamic uq a) = do
 	{
-		st <- matchWitness uq rep;
-		return (mapSameType st a);
+		MkSameType <- matchWitness uq (rep :: TypeRep a);
+		return a;
 	};
 
 	--dynApply :: Dynamic -> Dynamic -> Maybe Dynamic;

@@ -28,31 +28,34 @@ module Data.OpenWitness.OpenDict
 	openKeyLookup :: OpenKey s a -> OpenDict s -> Maybe a;
 	openKeyLookup (MkOpenKey wit) (MkOpenDict cells) = findM (\(MkCell cwit ca) -> do
 	{
-		smt <- matchWitness cwit wit;
-		return (mapSameType smt ca);
+		MkSameType <- matchWitness cwit wit;
+		return ca;
 	}) cells;
-
-	openKeyReplace :: OpenKey s a -> a -> OpenDict s -> Maybe (OpenDict s);
-	openKeyReplace (MkOpenKey wit) newa (MkOpenDict cc) = fmap MkOpenDict (mapCells cc) where
+	
+	replaceHelper :: (forall a. OpenWitness s a -> Maybe (a -> a)) -> Cell s -> Maybe (Cell s);
+	replaceHelper wmaa (MkCell wit a) = case wmaa wit of
 	{
-		mapCells (cell@(MkCell cwit _):cells) = case matchWitness wit cwit of
-		{
-			Just smt -> Just ((MkCell cwit (mapSameType smt newa)):cells);
-			_ -> fmap (cell :) (mapCells cells);
-		};
-		mapCells _ = Nothing;
+		Just aa -> Just $ MkCell wit (aa a);
+		_ -> Nothing;
 	};
 
 	openKeyModify :: OpenKey s a -> (a -> a) -> OpenDict s -> Maybe (OpenDict s);
 	openKeyModify (MkOpenKey wit) amap (MkOpenDict cc) = fmap MkOpenDict (mapCells cc) where
 	{
-		mapCells (cell@(MkCell cwit olda):cells) = case matchWitness wit cwit of
+		mapCells (cell:cells) = case replaceHelper (\cwit -> do
 		{
-			Just smt -> Just ((MkCell cwit (mapSameType smt (amap (mapSameType (reverseSameType smt) olda)))):cells);
+			MkSameType <- matchWitness wit cwit;
+			return amap;
+		}) cell of
+		{
+			Just newcell -> Just (newcell:cells);
 			_ -> fmap (cell :) (mapCells cells);
 		};
 		mapCells _ = Nothing;
 	};
+
+	openKeyReplace :: OpenKey s a -> a -> OpenDict s -> Maybe (OpenDict s);
+	openKeyReplace key newa = openKeyModify key (const newa);
 	
 	openKeyNew :: OpenWitness s a -> a -> OpenDict s -> (OpenDict s,OpenKey s a);
 	openKeyNew wit a (MkOpenDict cells) = (MkOpenDict ((MkCell wit a):cells),MkOpenKey wit);

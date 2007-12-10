@@ -12,7 +12,7 @@ module Data.OpenWitness
 	import Control.Monad.State;
 
 	unsafeSameType :: SameType a b;
-	unsafeSameType = MkSameType unsafeCoerce;
+	unsafeSameType = unsafeCoerce MkSameType;
 
 	newtype OpenWitness s a = MkOpenWitness Integer;
 	
