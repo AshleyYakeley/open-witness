@@ -3,23 +3,38 @@ module Data.OpenWitness.Typeable where
 	import Data.Witness;
 	import Data.OpenWitness;
 
+	data TypeRep2 p where
+	{
+		SimpleTypeRep2 :: IOWitness (p () ()) -> TypeRep2 p;
+--		ApplyTypeRep2 :: TypeRep3 p -> TypeRep a -> TypeRep2 (p a);
+	};
+
+	matchTypeRep2 :: TypeRep2 a -> TypeRep2 b -> Maybe (SameType (a () ()) (b () ()));
+	matchTypeRep2 (SimpleTypeRep2 wa) (SimpleTypeRep2 wb) = matchWitness wa wb;
+{-
+	matchTypeRep2 (ApplyTypeRep1 tfa ta) (ApplyTypeRep1 tfb tb) = do
+	{
+		MkSameType <- matchTypeRep2 tfa tfb;
+		MkSameType <- matchWitness ta tb;
+		return MkSameType;
+	};
+	matchTypeRep2 _ _ = Nothing;
+-}
 	data TypeRep1 p where
 	{
 		SimpleTypeRep1 :: IOWitness (p ()) -> TypeRep1 p;
---		ApplyTypeRep :: Wit (f () ()) -> TypeRep a -> TypeRep1 (f a);
+		ApplyTypeRep1 :: TypeRep2 p -> TypeRep a -> TypeRep1 (p a);
 	};
 
 	matchTypeRep1 :: TypeRep1 a -> TypeRep1 b -> Maybe (SameType (a ()) (b ()));
 	matchTypeRep1 (SimpleTypeRep1 wa) (SimpleTypeRep1 wb) = matchWitness wa wb;
-	{-
-	matchTypeRep1 (ApplyTypeRep wfa ta) (ApplyTypeRep wfb tb) = do
+	matchTypeRep1 (ApplyTypeRep1 tfa ta) (ApplyTypeRep1 tfb tb) = do
 	{
-		stf <- matchUniqueWitness wfa wfb;
-		starg <- matchTypeRep ta tb;
-		return (apply1SameType stf starg);
+		MkSameType <- matchTypeRep2 tfa tfb;
+		MkSameType <- matchWitness ta tb;
+		return MkSameType;
 	};
-	matchTypeRep _ _ = Nothing;
-	-}
+	matchTypeRep1 _ _ = Nothing;
 
 	data TypeRep a where
 	{
@@ -39,8 +54,12 @@ module Data.OpenWitness.Typeable where
 		matchWitness _ _ = Nothing;
 	};
 
-
-
+{-
+	mkAppTy :: TypeRep2 (->) -> TypeRep (a -> b) -> TypeRep a -> TypeRep b;
+	mkAppTy t2 tf ta = ApplyTypeRep (ApplyTypeRep1 ) tb;
+-}
+	mkFunTy :: TypeRep2 (->) -> TypeRep a -> TypeRep b -> TypeRep (a -> b);
+	mkFunTy t2 ta tb = ApplyTypeRep (ApplyTypeRep1 t2 ta) tb;
 
 	class Typeable a where
 	{
