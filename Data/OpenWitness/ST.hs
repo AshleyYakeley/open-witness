@@ -9,7 +9,7 @@ module Data.OpenWitness.ST
 	import Data.OpenWitness.OpenDict;
 	import Control.Monad.State;
 	
-	newtype ST s a = MkST (StateT (OpenDict s) (OW s) a) deriving (Functor,Monad,MonadFix);
+	newtype ST s a = MkST (StateT (OpenDict (OpenWitness s)) (OW s) a) deriving (Functor,Monad,MonadFix);
 
 	stToOW :: ST s a -> OW s a;
 	stToOW (MkST st) = evalStateT st emptyOpenDict;
@@ -20,16 +20,15 @@ module Data.OpenWitness.ST
 	fixST :: (a -> ST s a) -> ST s a;
 	fixST = mfix;
 
-	newtype STRef s a = MkSTRef (OpenKey s a) deriving Eq;
+	newtype STRef s a = MkSTRef (OpenWitness s a) deriving Eq;
 	
 	newSTRef :: a -> ST s (STRef s a);
 	newSTRef a = MkST (do
 	{
 		wit <- lift newOpenWitnessOW;
 		dict <- get;
-		let {(dict',key) = openKeyNew wit a dict;};
-		put dict';
-		return (MkSTRef key);
+		put (openKeyAdd wit a dict);
+		return (MkSTRef wit);
 	});
 	
 	readSTRef :: STRef s a -> ST s a;

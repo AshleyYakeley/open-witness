@@ -1,21 +1,16 @@
 module Data.OpenWitness.OpenDict
 (
 	OpenDict,emptyOpenDict,
-	OpenKey,openKeyLookup,openKeyReplace,openKeyModify,openKeyNew
+	openKeyLookup,openKeyReplace,openKeyModify,openKeyAdd
 ) where
 {
 	import Data.Witness;
-	import Data.OpenWitness;
 	import Control.Monad.State;
 	
-	data Cell s = forall a. MkCell (OpenWitness s a) a;
+	newtype OpenDict w = MkOpenDict [Any w];
 	
-	newtype OpenDict s = MkOpenDict [Cell s];
-	
-	emptyOpenDict :: OpenDict s;
+	emptyOpenDict :: OpenDict w;
 	emptyOpenDict = MkOpenDict[];
-	
-	newtype OpenKey s a = MkOpenKey (OpenWitness s a) deriving Eq;
 	
 	findM :: (a -> Maybe b) -> [a] -> Maybe b;
 	findM match (a:as) = case match a of
@@ -25,22 +20,22 @@ module Data.OpenWitness.OpenDict
 	};
 	findM _ _ = Nothing;
 	
-	openKeyLookup :: OpenKey s a -> OpenDict s -> Maybe a;
-	openKeyLookup (MkOpenKey wit) (MkOpenDict cells) = findM (\(MkCell cwit ca) -> do
+	openKeyLookup :: (Witness w) => w a -> OpenDict w -> Maybe a;
+	openKeyLookup wit (MkOpenDict cells) = findM (\(MkAny cwit ca) -> do
 	{
 		MkSameType <- matchWitness cwit wit;
 		return ca;
 	}) cells;
 	
-	replaceHelper :: (forall a. OpenWitness s a -> Maybe (a -> a)) -> Cell s -> Maybe (Cell s);
-	replaceHelper wmaa (MkCell wit a) = case wmaa wit of
+	replaceHelper :: (forall a. w a -> Maybe (a -> a)) -> Any w -> Maybe (Any w);
+	replaceHelper wmaa (MkAny wit a) = case wmaa wit of
 	{
-		Just aa -> Just $ MkCell wit (aa a);
+		Just aa -> Just $ MkAny wit (aa a);
 		_ -> Nothing;
 	};
 
-	openKeyModify :: OpenKey s a -> (a -> a) -> OpenDict s -> Maybe (OpenDict s);
-	openKeyModify (MkOpenKey wit) amap (MkOpenDict cc) = fmap MkOpenDict (mapCells cc) where
+	openKeyModify :: (Witness w) => w a -> (a -> a) -> OpenDict w -> Maybe (OpenDict w);
+	openKeyModify wit amap (MkOpenDict cc) = fmap MkOpenDict (mapCells cc) where
 	{
 		mapCells (cell:cells) = case replaceHelper (\cwit -> do
 		{
@@ -54,9 +49,9 @@ module Data.OpenWitness.OpenDict
 		mapCells _ = Nothing;
 	};
 
-	openKeyReplace :: OpenKey s a -> a -> OpenDict s -> Maybe (OpenDict s);
-	openKeyReplace key newa = openKeyModify key (const newa);
+	openKeyReplace :: (Witness w) => w a -> a -> OpenDict w -> Maybe (OpenDict w);
+	openKeyReplace wit newa = openKeyModify wit (const newa);
 	
-	openKeyNew :: OpenWitness s a -> a -> OpenDict s -> (OpenDict s,OpenKey s a);
-	openKeyNew wit a (MkOpenDict cells) = (MkOpenDict ((MkCell wit a):cells),MkOpenKey wit);
+	openKeyAdd :: w a -> a -> OpenDict w -> OpenDict w;
+	openKeyAdd wit a (MkOpenDict cells) = MkOpenDict ((MkAny wit a):cells);
 }
