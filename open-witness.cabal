@@ -8,7 +8,6 @@ Synopsis:		open witnesses
 Extensions:		RankNTypes EmptyDataDecls GeneralizedNewtypeDeriving ScopedTypeVariables
 Exposed-Modules:
 	Data.OpenWitness
-	Data.OpenWitness.OpenDict
 	Data.OpenWitness.ST
 	Data.OpenWitness.Typeable
 	Data.OpenWitness.Dynamic

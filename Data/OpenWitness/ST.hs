@@ -6,13 +6,13 @@ module Data.OpenWitness.ST
 ) where
 {
 	import Data.OpenWitness;
-	import Data.OpenWitness.OpenDict;
+	import Data.Witness.WitnessDict;
 	import Control.Monad.State;
 	
-	newtype ST s a = MkST (StateT (OpenDict (OpenWitness s)) (OW s) a) deriving (Functor,Monad,MonadFix);
+	newtype ST s a = MkST (StateT (WitnessDict (OpenWitness s)) (OW s) a) deriving (Functor,Monad,MonadFix);
 
 	stToOW :: ST s a -> OW s a;
-	stToOW (MkST st) = evalStateT st emptyOpenDict;
+	stToOW (MkST st) = evalStateT st emptyWitnessDict;
 
 	runST :: (forall s . ST s a) -> a;
 	runST st = runOW (stToOW st);
@@ -27,7 +27,7 @@ module Data.OpenWitness.ST
 	{
 		wit <- lift newOpenWitnessOW;
 		dict <- get;
-		put (openKeyAdd wit a dict);
+		put (witnessDictAdd wit a dict);
 		return (MkSTRef wit);
 	});
 	
@@ -35,7 +35,7 @@ module Data.OpenWitness.ST
 	readSTRef (MkSTRef key) = MkST (do
 	{
 		dict <- get;
-		case openKeyLookup key dict of
+		case witnessDictLookup key dict of
 		{
 			Just a -> return a;
 			_ -> fail "ref not found";
@@ -43,14 +43,14 @@ module Data.OpenWitness.ST
 	});
 	
 	writeSTRef :: forall s a. STRef s a -> a -> ST s ();
-	writeSTRef (MkSTRef key) newa = MkST (modify (\dict -> case openKeyReplace key newa dict of
+	writeSTRef (MkSTRef key) newa = MkST (modify (\dict -> case witnessDictReplace key newa dict of
 	{
 		Just dict' -> dict';
 		_ -> error "ref not found";
 	}));
 	
 	modifySTRef :: forall s a. STRef s a -> (a -> a) -> ST s ();
-	modifySTRef (MkSTRef key) amap = MkST (modify (\dict -> case openKeyModify key amap dict of
+	modifySTRef (MkSTRef key) amap = MkST (modify (\dict -> case witnessDictModify key amap dict of
 	{
 		Just dict' -> dict';
 		_ -> error "ref not found";
