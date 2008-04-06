@@ -5,11 +5,12 @@ Author:			Ashley Yakeley <ashley@semantic.org>
 Maintainer:		Ashley Yakeley <ashley@semantic.org>
 build-depends:	base>=2.0, mtl>=1.1, witness==0.1
 Synopsis:		open witnesses
-Extensions:		RankNTypes EmptyDataDecls GeneralizedNewtypeDeriving ScopedTypeVariables
+Build-Type:		Simple
+Extensions:		RankNTypes EmptyDataDecls GeneralizedNewtypeDeriving ScopedTypeVariables GADTs PatternSignatures
 Exposed-Modules:
 	Data.OpenWitness
 	Data.OpenWitness.ST
 	Data.OpenWitness.Typeable
 	Data.OpenWitness.Dynamic
 Other-Modules:
-GHC-Options: -Wall -Werror -XGADTs -XPatternSignatures
+GHC-Options: -Wall -Werror
