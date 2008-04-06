@@ -9,7 +9,7 @@ module Data.OpenWitness.ST
 	import Data.Witness.WitnessDict;
 	import Control.Monad.State;
 	
-	type ST s a = StateT (WitnessDict (OpenWitness s)) (OW s) a;
+	type ST s = StateT (WitnessDict (OpenWitness s)) (OW s);
 
 	stToOW :: ST s a -> OW s a;
 	stToOW st = evalStateT st emptyWitnessDict;
