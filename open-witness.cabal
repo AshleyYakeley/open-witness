@@ -6,7 +6,7 @@ Maintainer:		Ashley Yakeley <ashley@semantic.org>
 build-depends:	base>=2.0, mtl>=1.1, witness==0.1
 Synopsis:		open witnesses
 Build-Type:		Simple
-Extensions:		RankNTypes EmptyDataDecls GeneralizedNewtypeDeriving ScopedTypeVariables GADTs PatternSignatures
+Extensions:		RankNTypes EmptyDataDecls GeneralizedNewtypeDeriving ScopedTypeVariables GADTs PatternSignatures FlexibleContexts MultiParamTypeClasses
 Exposed-Modules:
 	Data.OpenWitness
 	Data.OpenWitness.ST

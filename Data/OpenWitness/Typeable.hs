@@ -2,6 +2,7 @@ module Data.OpenWitness.Typeable where
 {
 	import Data.Witness;
 	import Data.OpenWitness;
+	import Data.Maybe;
 
 	data TypeRep2 p where
 	{
@@ -64,6 +65,11 @@ module Data.OpenWitness.Typeable where
 	class Typeable a where
 	{
 		rep :: TypeRep a;
+	};
+
+	instance Eq1 TypeRep where
+	{
+		equals1 r1 r2 = isJust (matchWitness r1 r2);
 	};
 
 	cast :: forall a b. (Typeable a,Typeable b) => a -> Maybe b;
