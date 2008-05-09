@@ -14,12 +14,7 @@ module Data.OpenWitness
 	unsafeSameType :: SameType a b;
 	unsafeSameType = unsafeCoerce MkSameType;
 
-	newtype OpenWitness s a = MkOpenWitness Integer;
-	
-	instance Eq (OpenWitness s a) where
-	{
-		(MkOpenWitness ua) == (MkOpenWitness ub) = ua == ub;
-	};
+	newtype OpenWitness s a = MkOpenWitness Integer deriving Eq;
 	
 	instance Witness (OpenWitness s) where
 	{
