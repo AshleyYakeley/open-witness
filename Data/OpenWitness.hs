@@ -2,7 +2,8 @@ module Data.OpenWitness
 (
 	OpenWitness,
 	RealWorld,IOWitness,newIOWitness,
-	OW,newOpenWitnessOW,runOW,owToIO
+	OW,newOpenWitnessOW,runOW,owToIO,
+	unsafeIOWitnessFromInteger,unsafeIOWitnessFromString
 ) where
 {
 	import Data.Witness;
@@ -10,6 +11,7 @@ module Data.OpenWitness
 	import System.IO.Unsafe (unsafePerformIO);
 	import Control.Concurrent.MVar;
 	import Control.Monad.State;
+	import Data.HashTable;
 
 	unsafeSameType :: SameType a b;
 	unsafeSameType = unsafeCoerce MkSameType;
@@ -53,4 +55,11 @@ module Data.OpenWitness
 	{
 		(a,count) = runState st start;
 	} in return (count,a));
+	
+	unsafeIOWitnessFromInteger :: Integer -> IOWitness a;
+	unsafeIOWitnessFromInteger = MkOpenWitness;
+	
+	-- | a hack in the absence of open witness declarations
+	unsafeIOWitnessFromString :: String -> IOWitness a;
+	unsafeIOWitnessFromString = unsafeIOWitnessFromInteger . fromIntegral . hashString;
 }
