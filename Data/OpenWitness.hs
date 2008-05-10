@@ -60,6 +60,7 @@ module Data.OpenWitness
 	unsafeIOWitnessFromInteger = MkOpenWitness;
 	
 	-- | a hack in the absence of open witness declarations
+	;
 	unsafeIOWitnessFromString :: String -> IOWitness a;
 	unsafeIOWitnessFromString = unsafeIOWitnessFromInteger . fromIntegral . hashString;
 }
