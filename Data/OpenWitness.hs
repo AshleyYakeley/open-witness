@@ -13,8 +13,8 @@ module Data.OpenWitness
 	import Control.Monad.State;
 	import Data.HashTable;
 
-	unsafeSameType :: SameType a b;
-	unsafeSameType = unsafeCoerce MkSameType;
+	unsafeSameType :: EqualType a b;
+	unsafeSameType = unsafeCoerce MkEqualType;
 
 	newtype OpenWitness s a = MkOpenWitness Integer deriving Eq;
 	
