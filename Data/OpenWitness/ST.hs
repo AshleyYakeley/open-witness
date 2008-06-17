@@ -43,18 +43,10 @@ module Data.OpenWitness.ST
 	};
 	
 	writeSTRef :: forall s a. STRef s a -> a -> ST s ();
-	writeSTRef key newa = modify (\dict -> case witnessDictReplace key newa dict of
-	{
-		Just dict' -> dict';
-		_ -> error "ref not found";
-	});
+	writeSTRef key newa = modify (witnessDictReplace key newa);
 	
 	modifySTRef :: forall s a. STRef s a -> (a -> a) -> ST s ();
-	modifySTRef key amap = modify (\dict -> case witnessDictModify key amap dict of
-	{
-		Just dict' -> dict';
-		_ -> error "ref not found";
-	});
+	modifySTRef key amap = modify (witnessDictModify key amap);
 	
 	stToIO :: ST RealWorld a -> IO a;
 	stToIO = owToIO . stToOW;
