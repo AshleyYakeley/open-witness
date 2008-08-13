@@ -43,7 +43,7 @@ module Data.OpenWitness.Typeable where
 		ApplyTypeRep :: TypeRep1 p -> TypeRep a -> TypeRep (p a);
 	};
 
-	instance Witness TypeRep where
+	instance SimpleWitness TypeRep where
 	{
 		matchWitness (SimpleTypeRep wa) (SimpleTypeRep wb) = matchWitness wa wb;
 		matchWitness (ApplyTypeRep tfa ta) (ApplyTypeRep tfb tb) = do

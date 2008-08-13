@@ -18,7 +18,7 @@ module Data.OpenWitness
 
 	newtype OpenWitness s a = MkOpenWitness Integer deriving Eq;
 	
-	instance Witness (OpenWitness s) where
+	instance SimpleWitness (OpenWitness s) where
 	{
 		matchWitness (MkOpenWitness ua) (MkOpenWitness ub) = 
 			if ua == ub then Just unsafeSameType else Nothing;
