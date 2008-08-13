@@ -38,3 +38,4 @@
 ^dist($|/)
 \.chi$
 -haddock-prolog\.txt$
+^test/dist($|/)

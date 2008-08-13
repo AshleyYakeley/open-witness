@@ -1,0 +1,23 @@
+name:			test-open-witness
+version:		0.1
+license:		BSD3
+license-file:	../LICENSE
+author:			Ashley Yakeley <ashley@semantic.org>
+maintainer:		Ashley Yakeley <ashley@semantic.org>
+build-depends:	base>=2.0, mtl>=1.1, witness==0.1, open-witness==0.1
+category:		Data
+synopsis:		test for open witnesses
+build-type:		Simple
+extensions:
+	RankNTypes 
+	EmptyDataDecls 
+	GeneralizedNewtypeDeriving 
+	ScopedTypeVariables 
+	GADTs 
+	PatternSignatures 
+	FlexibleContexts 
+	MultiParamTypeClasses
+
+executable: Test
+main-is: Main.hs
+other-modules: Object Unsafe
