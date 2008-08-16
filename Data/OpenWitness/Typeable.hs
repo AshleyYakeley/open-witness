@@ -4,70 +4,70 @@ module Data.OpenWitness.Typeable where
 	import Data.OpenWitness;
 	import Data.Maybe;
 
-	data TypeRep2 p where
+	data Rep2 p where
 	{
-		SimpleTypeRep2 :: IOWitness (p () ()) -> TypeRep2 p;
---		ApplyTypeRep2 :: TypeRep3 p -> TypeRep a -> TypeRep2 (p a);
+		SimpleRep2 :: IOWitness (p () ()) -> Rep2 p;
+--		ApplyRep2 :: TypeRep3 p -> Rep a -> Rep2 (p a);
 	};
 
-	matchTypeRep2 :: TypeRep2 a -> TypeRep2 b -> Maybe (EqualType (a () ()) (b () ()));
-	matchTypeRep2 (SimpleTypeRep2 wa) (SimpleTypeRep2 wb) = matchWitness wa wb;
+	matchRep2 :: Rep2 a -> Rep2 b -> Maybe (EqualType (a () ()) (b () ()));
+	matchRep2 (SimpleRep2 wa) (SimpleRep2 wb) = matchWitness wa wb;
 {-
-	matchTypeRep2 (ApplyTypeRep1 tfa ta) (ApplyTypeRep1 tfb tb) = do
+	matchRep2 (ApplyRep1 tfa ta) (ApplyRep1 tfb tb) = do
 	{
-		MkEqualType <- matchTypeRep2 tfa tfb;
+		MkEqualType <- matchRep2 tfa tfb;
 		MkEqualType <- matchWitness ta tb;
 		return MkEqualType;
 	};
-	matchTypeRep2 _ _ = Nothing;
+	matchRep2 _ _ = Nothing;
 -}
-	data TypeRep1 p where
+	data Rep1 p where
 	{
-		SimpleTypeRep1 :: IOWitness (p ()) -> TypeRep1 p;
-		ApplyTypeRep1 :: TypeRep2 p -> TypeRep a -> TypeRep1 (p a);
+		SimpleRep1 :: IOWitness (p ()) -> Rep1 p;
+		ApplyRep1 :: Rep2 p -> Rep a -> Rep1 (p a);
 	};
 
-	matchTypeRep1 :: TypeRep1 a -> TypeRep1 b -> Maybe (EqualType (a ()) (b ()));
-	matchTypeRep1 (SimpleTypeRep1 wa) (SimpleTypeRep1 wb) = matchWitness wa wb;
-	matchTypeRep1 (ApplyTypeRep1 tfa ta) (ApplyTypeRep1 tfb tb) = do
+	matchRep1 :: Rep1 a -> Rep1 b -> Maybe (EqualType (a ()) (b ()));
+	matchRep1 (SimpleRep1 wa) (SimpleRep1 wb) = matchWitness wa wb;
+	matchRep1 (ApplyRep1 tfa ta) (ApplyRep1 tfb tb) = do
 	{
-		MkEqualType <- matchTypeRep2 tfa tfb;
+		MkEqualType <- matchRep2 tfa tfb;
 		MkEqualType <- matchWitness ta tb;
 		return MkEqualType;
 	};
-	matchTypeRep1 _ _ = Nothing;
+	matchRep1 _ _ = Nothing;
 
-	data TypeRep a where
+	data Rep a where
 	{
-		SimpleTypeRep :: IOWitness a -> TypeRep a;
-		ApplyTypeRep :: TypeRep1 p -> TypeRep a -> TypeRep (p a);
+		SimpleRep :: IOWitness a -> Rep a;
+		ApplyRep :: Rep1 p -> Rep a -> Rep (p a);
 	};
 
-	instance SimpleWitness TypeRep where
+	instance SimpleWitness Rep where
 	{
-		matchWitness (SimpleTypeRep wa) (SimpleTypeRep wb) = matchWitness wa wb;
-		matchWitness (ApplyTypeRep tfa ta) (ApplyTypeRep tfb tb) = do
+		matchWitness (SimpleRep wa) (SimpleRep wb) = matchWitness wa wb;
+		matchWitness (ApplyRep tfa ta) (ApplyRep tfb tb) = do
 		{
-			MkEqualType <- matchTypeRep1 tfa tfb;
+			MkEqualType <- matchRep1 tfa tfb;
 			MkEqualType <- matchWitness ta tb;
 			return MkEqualType;
 		};
 		matchWitness _ _ = Nothing;
 	};
 
-	repFn :: TypeRep2 (->);
-	repFn = SimpleTypeRep2 witFn where
+	repFn :: Rep2 (->);
+	repFn = SimpleRep2 witFn where
 	{
 		witFn :: IOWitness (() -> ()); -- <- newIOWitness;
 		witFn = unsafeIOWitnessFromString "Data.OpenWitness.Typeable.witFn";
 	};
 
 {-
-	mkAppTy :: TypeRep (a -> b) -> TypeRep a -> TypeRep b;
-	mkAppTy tf ta = ApplyTypeRep (ApplyTypeRep1 ) tb;
+	mkAppTy :: Rep (a -> b) -> Rep a -> Rep b;
+	mkAppTy tf ta = ApplyRep (ApplyRep1 ) tb;
 -}
-	mkFunTy :: TypeRep a -> TypeRep b -> TypeRep (a -> b);
-	mkFunTy ta tb = ApplyTypeRep (ApplyTypeRep1 repFn ta) tb;
+	mkFunTy :: Rep a -> Rep b -> Rep (a -> b);
+	mkFunTy ta tb = ApplyRep (ApplyRep1 repFn ta) tb;
 
 	instance (Typeable a,Typeable b) => Typeable (a -> b) where
 	{
@@ -76,10 +76,10 @@ module Data.OpenWitness.Typeable where
 
 	class Typeable a where
 	{
-		rep :: TypeRep a;
+		rep :: Rep a;
 	};
 
-	instance Eq1 TypeRep where
+	instance Eq1 Rep where
 	{
 		equals1 r1 r2 = isJust (matchWitness r1 r2);
 	};
