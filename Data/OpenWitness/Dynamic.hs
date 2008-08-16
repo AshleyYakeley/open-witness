@@ -1,8 +1,6 @@
 module Data.OpenWitness.Dynamic where
 {
-	import System.IO.Unsafe;
 	import Data.Witness;
-	import Data.OpenWitness;
 	import Data.OpenWitness.Typeable;
 
 	type Dynamic = Any TypeRep;
@@ -24,19 +22,10 @@ module Data.OpenWitness.Dynamic where
 		return a;
 	};
 
-	witFn :: IOWitness (() -> ()); -- <- newIOWitness;
-	{-# NOINLINE witFn #-};
-	witFn = unsafePerformIO newIOWitness;
-
-	instance (Typeable a,Typeable b) => Typeable (a -> b) where
-	{
-		rep = ApplyTypeRep (ApplyTypeRep1 (SimpleTypeRep2 witFn) rep) rep;
-	};
-
 	dynApply :: Dynamic -> Dynamic -> Maybe Dynamic;
-	dynApply (MkAny (ApplyTypeRep (ApplyTypeRep1 (SimpleTypeRep2 witFn') rx') ry) f) (MkAny rx x) = do
+	dynApply (MkAny (ApplyTypeRep (ApplyTypeRep1 repFn' rx') ry) f) (MkAny rx x) = do
 	{
-		MkEqualType <- matchWitness witFn' witFn;
+		MkEqualType <- matchTypeRep2 repFn' repFn;
 		MkEqualType <- matchWitness rx' rx;
 		return (MkAny ry (f x));
 	};

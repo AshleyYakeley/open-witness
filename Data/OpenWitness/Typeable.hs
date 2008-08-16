@@ -55,12 +55,24 @@ module Data.OpenWitness.Typeable where
 		matchWitness _ _ = Nothing;
 	};
 
+	repFn :: TypeRep2 (->);
+	repFn = SimpleTypeRep2 witFn where
+	{
+		witFn :: IOWitness (() -> ()); -- <- newIOWitness;
+		witFn = unsafeIOWitnessFromString "Data.OpenWitness.Typeable.witFn";
+	};
+
 {-
-	mkAppTy :: TypeRep2 (->) -> TypeRep (a -> b) -> TypeRep a -> TypeRep b;
-	mkAppTy t2 tf ta = ApplyTypeRep (ApplyTypeRep1 ) tb;
+	mkAppTy :: TypeRep (a -> b) -> TypeRep a -> TypeRep b;
+	mkAppTy tf ta = ApplyTypeRep (ApplyTypeRep1 ) tb;
 -}
-	mkFunTy :: TypeRep2 (->) -> TypeRep a -> TypeRep b -> TypeRep (a -> b);
-	mkFunTy t2 ta tb = ApplyTypeRep (ApplyTypeRep1 t2 ta) tb;
+	mkFunTy :: TypeRep a -> TypeRep b -> TypeRep (a -> b);
+	mkFunTy ta tb = ApplyTypeRep (ApplyTypeRep1 repFn ta) tb;
+
+	instance (Typeable a,Typeable b) => Typeable (a -> b) where
+	{
+		rep = mkFunTy rep rep;
+	};
 
 	class Typeable a where
 	{
