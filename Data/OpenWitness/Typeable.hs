@@ -55,6 +55,11 @@ module Data.OpenWitness.Typeable where
 		matchWitness _ _ = Nothing;
 	};
 
+	instance Eq1 Rep where
+	{
+		equals1 r1 r2 = isJust (matchWitness r1 r2);
+	};
+
 	repFn :: Rep2 (->);
 	repFn = SimpleRep2 witFn where
 	{
@@ -62,26 +67,9 @@ module Data.OpenWitness.Typeable where
 		witFn = unsafeIOWitnessFromString "Data.OpenWitness.Typeable.witFn";
 	};
 
-{-
-	mkAppTy :: Rep (a -> b) -> Rep a -> Rep b;
-	mkAppTy tf ta = ApplyRep (ApplyRep1 ) tb;
--}
-	mkFunTy :: Rep a -> Rep b -> Rep (a -> b);
-	mkFunTy ta tb = ApplyRep (ApplyRep1 repFn ta) tb;
-
-	instance (Typeable a,Typeable b) => Typeable (a -> b) where
-	{
-		rep = mkFunTy rep rep;
-	};
-
 	class Typeable a where
 	{
 		rep :: Rep a;
-	};
-
-	instance Eq1 Rep where
-	{
-		equals1 r1 r2 = isJust (matchWitness r1 r2);
 	};
 
 	cast :: forall a b. (Typeable a,Typeable b) => a -> Maybe b;
@@ -96,5 +84,31 @@ module Data.OpenWitness.Typeable where
 	{
 		MkEqualType :: EqualType a b <- matchWitness rep rep;
 		return ca;
+	};
+
+	type TypeRep = AnyWitness Rep;
+
+	typeOf :: forall a. (Typeable a) => a -> TypeRep;
+	typeOf _ = MkAnyWitness (rep :: Rep a);
+
+{-
+	mkAppTy :: Rep (a -> b) -> Rep a -> Rep b;
+	mkAppTy tf ta = ApplyRep (ApplyRep1 ) tb;
+-}
+	mkFunTy :: TypeRep -> TypeRep -> TypeRep;
+	mkFunTy (MkAnyWitness ta) (MkAnyWitness tb) = MkAnyWitness (ApplyRep (ApplyRep1 repFn ta) tb);
+
+	funResultTy :: TypeRep -> TypeRep -> Maybe TypeRep;
+	funResultTy (MkAnyWitness (ApplyRep (ApplyRep1 repFn' ta') tb')) (MkAnyWitness ta) = do
+	{
+		MkEqualType <- matchRep2 repFn' repFn;
+		MkEqualType <- matchWitness ta' ta;
+		return (MkAnyWitness tb');
+	};
+	funResultTy _ _ = Nothing;
+
+	instance (Typeable a,Typeable b) => Typeable (a -> b) where
+	{
+		rep = ApplyRep (ApplyRep1 repFn rep) rep;
 	};
 }
