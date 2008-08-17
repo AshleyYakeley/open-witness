@@ -1,9 +1,16 @@
+-- | This is an approximate re-implementation of "Data.Dynamic" using open witnesses.
 module Data.OpenWitness.Dynamic where
 {
 	import Data.Witness;
 	import Data.OpenWitness.Typeable;
 
+	-- * The @Dynamic@ type
+	;
+
 	type Dynamic = Any Rep;
+
+	-- * Converting to and from @Dynamic@
+	;
 
 	toDyn :: Typeable a => a -> Dynamic;
 	toDyn = MkAny rep;
@@ -22,14 +29,25 @@ module Data.OpenWitness.Dynamic where
 		return a;
 	};
 
+	-- * Applying functions of dynamic type
+	;
+
 	dynApply :: Dynamic -> Dynamic -> Maybe Dynamic;
 	dynApply (MkAny (ApplyRep (ApplyRep1 repFn' rx') ry) f) (MkAny rx x) = do
 	{
-		MkEqualType <- matchRep2 repFn' repFn;
+		MkEqualType <- matchRep2 repFn' (rep2 :: Rep2 (->));
 		MkEqualType <- matchWitness rx' rx;
 		return (MkAny ry (f x));
 	};
 	dynApply _ _ = Nothing;
 
-	--dynApp :: Dynamic -> Dynamic -> Dynamic
+	dynApp :: Dynamic -> Dynamic -> Dynamic;
+	dynApp a b = case (dynApply a b) of
+	{
+		Just d -> d;
+		_ -> error "Type error in dynamic application.\nCan't apply function to argument";
+	};
+
+	dynTypeRep :: Dynamic -> TypeRep;
+	dynTypeRep (MkAny r _) = MkAnyWitness r;
 }

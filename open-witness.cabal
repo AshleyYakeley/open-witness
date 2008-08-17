@@ -11,17 +11,19 @@ description:
 	Open witnesses are witnesses that can witness to any type. However, they cannot be constructed, they can only be generated in the IO monad.
 build-type:		Simple
 extensions:
-	RankNTypes 
-	EmptyDataDecls 
-	GeneralizedNewtypeDeriving 
-	ScopedTypeVariables 
-	GADTs 
-	PatternSignatures 
-	FlexibleContexts 
+	RankNTypes
+	EmptyDataDecls
+	GeneralizedNewtypeDeriving
+	ScopedTypeVariables
+	GADTs
+	PatternSignatures
+	FlexibleContexts
+	FlexibleInstances
 	MultiParamTypeClasses
 exposed-modules:
 	Data.OpenWitness
 	Data.OpenWitness.ST
 	Data.OpenWitness.Typeable
+	Data.OpenWitness.Typeable.Rep
 	Data.OpenWitness.Dynamic
 other-modules:

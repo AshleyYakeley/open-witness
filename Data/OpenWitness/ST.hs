@@ -1,8 +1,12 @@
+-- | This is an approximate re-implementation of "Control.Monad.ST" and "Data.STRef" using open witnesses.
 module Data.OpenWitness.ST
 (
+	-- * The @ST@ Monad
 	ST,runST,fixST,
-	newSTRef,readSTRef,writeSTRef,modifySTRef,
-	stToOW,RealWorld,stToIO
+	-- * Converting @ST@ to @OW@ and @IO@
+	stToOW,RealWorld,stToIO,
+	-- * STRefs
+	STRef,newSTRef,readSTRef,writeSTRef,modifySTRef
 ) where
 {
 	import Data.OpenWitness;
