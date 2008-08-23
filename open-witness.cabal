@@ -28,4 +28,5 @@ exposed-modules:
 	Data.OpenWitness.Typeable
 	Data.OpenWitness.Typeable.Rep
 	Data.OpenWitness.Dynamic
+	Data.OpenWitness.Exception
 other-modules:
