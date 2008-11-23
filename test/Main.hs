@@ -25,12 +25,13 @@ module Main where
 	stringExn = unsafeExnFromString "Main.stringExn";
 	
 	showCatch :: IO a -> IO ();
-	showCatch f = catch (catch (do
+	showCatch f = ((do
 	{
 		f;
 		putStrLn "not caught";
-	}) intExn (\i -> putStrLn ("caught intExn " ++ (show i))))
-	stringExn (\s -> putStrLn ("caught stringExn " ++ (show s)));
+	}
+	`catch` intExn) (\i -> putStrLn ("caught intExn " ++ (show i)))
+	`catch` stringExn) (\s -> putStrLn ("caught stringExn " ++ (show s)));
 	
 	main :: IO ();
 	main = do
