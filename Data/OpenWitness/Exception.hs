@@ -7,8 +7,8 @@ module Data.OpenWitness.Exception
 	import Data.Witness;
 	import Data.Maybe;
 	import Data.Typeable;
-	import Control.Exception (throwDyn,catchDyn);
-	import Prelude(IO,String);
+	import qualified Control.Exception as CE (Exception,throw,catch);
+	import Prelude(IO,String,Show(..));
 
 	-- | A key to match exceptions. The type variable is the data the exception carries.
 	;
@@ -27,13 +27,20 @@ module Data.OpenWitness.Exception
 		typeOf _ = mkTyConApp (mkTyCon "Data.OpenWitness.Exception.ExnException") [];
 	};
 	
+	instance Show ExnException where
+	{
+		show _ = "ExnException";
+	};
+	
+	instance CE.Exception ExnException;
+	
 	throw :: Exn e -> e -> a;
-	throw exn e = throwDyn (MkExnException (MkAny exn e));
+	throw exn e = CE.throw (MkExnException (MkAny exn e));
 	
 	catch :: IO a -> Exn e -> (e -> IO a) -> IO a;
-	catch foo exn catcher = catchDyn foo (\ex@(MkExnException cell) -> case matchAny exn cell of
+	catch foo exn catcher = CE.catch foo (\ex@(MkExnException cell) -> case matchAny exn cell of
 	{
 		Just e -> catcher e;
-		_ -> throwDyn ex;
+		_ -> CE.throw ex;
 	});
 }
