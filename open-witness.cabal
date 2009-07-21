@@ -23,9 +23,9 @@ extensions:
 	MultiParamTypeClasses
 exposed-modules:
 	Data.OpenWitness
+	Data.OpenWitness.OpenRep
 	Data.OpenWitness.ST
 	Data.OpenWitness.Typeable
-	Data.OpenWitness.Typeable.Rep
 	Data.OpenWitness.Dynamic
 	Data.OpenWitness.Exception
 other-modules:

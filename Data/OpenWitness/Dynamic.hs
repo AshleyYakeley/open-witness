@@ -2,12 +2,13 @@
 module Data.OpenWitness.Dynamic where
 {
 	import Data.Witness;
+	import Data.OpenWitness.OpenRep;
 	import Data.OpenWitness.Typeable;
 
 	-- * The @Dynamic@ type
 	;
 
-	type Dynamic = Any Rep;
+	type Dynamic = Any OpenRep;
 
 	-- * Converting to and from @Dynamic@
 	;
@@ -25,7 +26,7 @@ module Data.OpenWitness.Dynamic where
 	fromDynamic :: forall a. Typeable a => Dynamic -> Maybe a;
 	fromDynamic (MkAny uq a) = do
 	{
-		MkEqualType <- matchWitness uq (rep :: Rep a);
+		MkEqualType <- matchWitness uq (rep :: OpenRep a);
 		return a;
 	};
 
@@ -33,9 +34,9 @@ module Data.OpenWitness.Dynamic where
 	;
 
 	dynApply :: Dynamic -> Dynamic -> Maybe Dynamic;
-	dynApply (MkAny (ApplyRep (ApplyRep1 repFn' rx') ry) f) (MkAny rx x) = do
+	dynApply (MkAny (ApplyOpenRep (ApplyOpenRep1 repFn' rx') ry) f) (MkAny rx x) = do
 	{
-		MkEqualType <- matchRep2 repFn' (rep2 :: Rep2 (->));
+		MkEqualType <- matchOpenRep2 repFn' (rep2 :: OpenRep2 (->));
 		MkEqualType <- matchWitness rx' rx;
 		return (MkAny ry (f x));
 	};
