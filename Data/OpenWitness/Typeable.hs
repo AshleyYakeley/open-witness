@@ -4,7 +4,6 @@ module Data.OpenWitness.Typeable where
 	import Data.OpenWitness.OpenRep;
 	import Data.OpenWitness;
 	import Data.Witness;
-	import Data.Maybe;
 
 	-- | types of kind @*@ with a representation
 	;
