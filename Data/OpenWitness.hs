@@ -1,10 +1,13 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# OPTIONS -fno-warn-name-shadowing #-}
 module Data.OpenWitness
 (
 	OpenWitness,
 	RealWorld,IOWitness,newIOWitness,
 	OW,newOpenWitnessOW,runOW,owToIO,
---	unsafeIOWitnessFromInteger,
-	unsafeIOWitnessFromString
+	unsafeIOWitnessFromInteger,
+	unsafeIOWitnessFromString,
+	iowitness
 ) where
 {
 	import Data.Witness;
@@ -13,6 +16,11 @@ module Data.OpenWitness
 	import Control.Concurrent.MVar;
 	import Control.Monad.State;
 	import Data.HashTable;
+
+	import Language.Haskell.TH;
+	import Data.List;
+	import System.Random;
+	import Prelude;
 
 	unsafeSameType :: EqualType a b;
 	unsafeSameType = unsafeCoerce MkEqualType;
@@ -86,4 +94,43 @@ module Data.OpenWitness
 	;
 	unsafeIOWitnessFromString :: String -> IOWitness a;
 	unsafeIOWitnessFromString = unsafeIOWitnessFromInteger . fromIntegral . hashString;
+
+    iowitness :: TypeQ -> Q Exp;
+    iowitness qt = do
+    {
+        t <- qt;
+        _ <- forM (freevarsType t) (\v -> report True ("Type variable "++(show v)++" free in iowitness type"));
+        l <- location;
+        rnd :: Integer <- runIO randomIO;
+        key <- return ((showLoc l) ++ "/" ++ (show rnd));
+        [|
+            --let { fromInteger = Prelude.fromInteger } in (unsafeIOWitnessFromInteger $(return (LitE (IntegerL rnd))))
+            unsafeIOWitnessFromString $(return (LitE (StringL key)))
+             :: IOWitness $(return t)
+        |];
+    } where
+    {
+        showLoc :: Loc -> String;
+        showLoc l = (loc_filename l) ++ "=" ++ (loc_package l) ++ ":" ++ (loc_module l) ++ (show (loc_start l)) ++ (show (loc_end l));
+    
+        freevarsPred :: Pred -> [Name];
+        freevarsPred (ClassP _ ts) = unionList (fmap freevarsType ts);
+        freevarsPred (EqualP t1 t2) = union (freevarsType t1) (freevarsType t2);
+    
+        unionList :: (Eq a) => [[a]] -> [a];
+        unionList [] = [];
+        unionList (l:ls) = union l (unionList ls);
+    
+        bindingvarTVB :: TyVarBndr -> Name;
+        bindingvarTVB (PlainTV n) = n;
+        bindingvarTVB (KindedTV n _) = n;
+    
+        freevarsType :: Language.Haskell.TH.Type -> [Name];
+        freevarsType (ForallT tvbs ps t) =
+         (union (freevarsType t) (unionList (fmap freevarsPred ps))) \\ (fmap bindingvarTVB tvbs);
+        freevarsType (VarT name) = [name];
+        freevarsType (AppT t1 t2) = union (freevarsType t1) (freevarsType t2);
+        freevarsType (SigT t _) = freevarsType t;
+        freevarsType _ = [];
+    };
 }

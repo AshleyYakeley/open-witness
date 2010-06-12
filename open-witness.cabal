@@ -4,7 +4,7 @@ license:		BSD3
 license-file:	LICENSE
 author:			Ashley Yakeley <ashley@semantic.org>
 maintainer:		Ashley Yakeley <ashley@semantic.org>
-build-depends:	base>=4.0, mtl>=1.1, witness==0.2
+build-depends:	base>=4.0, mtl>=1.1, witness==0.2, random >=1.0, template-haskell >= 2.4
 category:		Data
 synopsis:		open witnesses
 description:
@@ -21,6 +21,7 @@ extensions:
 	FlexibleContexts
 	FlexibleInstances
 	MultiParamTypeClasses
+	TemplateHaskell
 exposed-modules:
 	Data.OpenWitness
 	Data.OpenWitness.OpenRep
