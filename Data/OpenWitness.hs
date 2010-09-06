@@ -30,9 +30,9 @@ module Data.OpenWitness
 	;
 	newtype OpenWitness s a = MkOpenWitness Integer deriving Eq;
 	
-	instance SimpleWitness1 OpenWitness where
+	instance SimpleWitness (OpenWitness s) where
 	{
-		matchWitness1 (MkOpenWitness ua) (MkOpenWitness ub) = 
+		matchWitness (MkOpenWitness ua) (MkOpenWitness ub) =
 			if ua == ub then Just unsafeSameType else Nothing;
 	};
 
@@ -112,19 +112,19 @@ module Data.OpenWitness
     {
         showLoc :: Loc -> String;
         showLoc l = (loc_filename l) ++ "=" ++ (loc_package l) ++ ":" ++ (loc_module l) ++ (show (loc_start l)) ++ (show (loc_end l));
-    
+
         freevarsPred :: Pred -> [Name];
         freevarsPred (ClassP _ ts) = unionList (fmap freevarsType ts);
         freevarsPred (EqualP t1 t2) = union (freevarsType t1) (freevarsType t2);
-    
+
         unionList :: (Eq a) => [[a]] -> [a];
         unionList [] = [];
         unionList (l:ls) = union l (unionList ls);
-    
+
         bindingvarTVB :: TyVarBndr -> Name;
         bindingvarTVB (PlainTV n) = n;
         bindingvarTVB (KindedTV n _) = n;
-    
+
         freevarsType :: Language.Haskell.TH.Type -> [Name];
         freevarsType (ForallT tvbs ps t) =
          (union (freevarsType t) (unionList (fmap freevarsPred ps))) \\ (fmap bindingvarTVB tvbs);
