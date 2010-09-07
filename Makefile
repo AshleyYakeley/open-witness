@@ -6,16 +6,16 @@ clean:
 	cabal clean
 
 configure:
-	cabal configure
+	cabal configure --enable-library-profiling --enable-executable-profiling
 
 build: configure
-	cabal build --ghc-options="-Wall -Werror"
+	cabal build --ghc-options=-Werror
 
 haddock: configure
 	cabal haddock
 
 install: build
-	cabal install --user
+	cabal install --user --enable-library-profiling --enable-executable-profiling
 
 complete: haddock install
 

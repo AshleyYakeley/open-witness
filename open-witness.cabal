@@ -1,10 +1,12 @@
+cabal-version: >= 1.6
+
 name:			open-witness
 version:		0.2
 license:		BSD3
 license-file:	LICENSE
 author:			Ashley Yakeley <ashley@semantic.org>
 maintainer:		Ashley Yakeley <ashley@semantic.org>
-build-depends:	base>=4.0, mtl>=1.1, witness==0.2, random >=1.0, template-haskell >= 2.4
+build-depends:	base==4.*, mtl>=1.1, witness==0.2, random >=1.0, template-haskell >= 2.4
 category:		Data
 synopsis:		open witnesses
 description:
@@ -12,6 +14,7 @@ description:
 
 	See the paper /Witnesses and Open Witnesses/ (<http://semantic.org/stuff/Open-Witnesses.pdf>).
 build-type:		Simple
+ghc-options: -Wall
 extensions:
 	RankNTypes
 	EmptyDataDecls
