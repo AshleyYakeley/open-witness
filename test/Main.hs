@@ -1,3 +1,4 @@
+{-# LANGUAGE TemplateHaskell #-}
 module Main where
 {
 	import Data.OpenWitness.ST;
@@ -20,14 +21,14 @@ module Main where
 	};
 	
 	intExn :: Exn Int;
-	intExn = unsafeExnFromString "Main.intExn";
+	intExn = $(declexn [t|Int|]);
 	stringExn :: Exn String;
-	stringExn = unsafeExnFromString "Main.stringExn";
+	stringExn = $(declexn [t|String|]);
 	
 	showCatch :: IO a -> IO ();
 	showCatch f = ((do
 	{
-		f;
+		_ <- f;
 		putStrLn "not caught";
 	}
 	`catch` intExn) (\i -> putStrLn ("caught intExn " ++ (show i)))
