@@ -1,12 +1,11 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS -fno-warn-name-shadowing #-}
 module Data.OpenWitness
 (
 	OpenWitness,
 	RealWorld,IOWitness,newIOWitness,
 	OW,newOpenWitnessOW,runOW,owToIO,
-	unsafeIOWitnessFromInteger,
-	unsafeIOWitnessFromString,
+--	unsafeIOWitnessFromInteger,
+--	unsafeIOWitnessFromString,
 	iowitness
 ) where
 {
@@ -83,18 +82,20 @@ module Data.OpenWitness
 		(a,count) = runState st start;
 	} in return (count,a));
 	
-	-- | In the absence of open witness declarations, an unsafe hack to generate 'IOWitness' values.
+	-- | An unsafe hack to generate 'IOWitness' values.
 	-- This is safe if you use a different integer each time, and if @a@ is a single type.
 	;
 	unsafeIOWitnessFromInteger :: Integer -> IOWitness a;
 	unsafeIOWitnessFromInteger = MkOpenWitness;
 	
-	-- | In the absence of open witness declarations, an unsafe hack to generate 'IOWitness' values.
+	-- | An unsafe hack to generate 'IOWitness' values.
 	-- This is safe if you use a different string each time (and 'hashString' doesn't collide), and if @a@ is a single type.
 	;
 	unsafeIOWitnessFromString :: String -> IOWitness a;
 	unsafeIOWitnessFromString = unsafeIOWitnessFromInteger . fromIntegral . hashString;
 
+    -- | Template Haskell function to declare 'IOWitness' values.
+    ;
     iowitness :: TypeQ -> Q Exp;
     iowitness qt = do
     {

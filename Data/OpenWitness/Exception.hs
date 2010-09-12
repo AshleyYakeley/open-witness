@@ -1,26 +1,27 @@
+{-# OPTIONS -fno-warn-unused-matches #-}
 module Data.OpenWitness.Exception
 (
-	Exn, unsafeExnFromString, throw, catch
+	Exn, declexn, throw, catch
 ) where
 {
 	import Data.OpenWitness;
 	import Data.Witness;
 	import Data.Maybe;
 	import Data.Typeable;
+	import Language.Haskell.TH;
 	import qualified Control.Exception as CE (Exception,throw,catch);
-	import Prelude(IO,String,Show(..));
+	import Prelude(IO,Show(..));
 
 	-- | A key to match exceptions. The type variable is the data the exception carries.
 	;
 	type Exn = IOWitness;
 
 	newtype ExnException = MkExnException (Any Exn);
-	
-	-- | In the absence of open witness declarations, an unsafe hack to generate 'Exn' exception keys.
-	-- This is safe if you use a different string each time (and 'hashString' doesn't collide), and if @e@ is a single type.
-	;
-	unsafeExnFromString :: String -> Exn e;
-	unsafeExnFromString = unsafeIOWitnessFromString;
+
+    -- | Template Haskell function to declare 'Exn' exception keys.
+    ;
+    declexn :: TypeQ -> Q Exp;
+    declexn te = iowitness [t|Exn $(te)|];
 	
 	instance Typeable ExnException where
 	{

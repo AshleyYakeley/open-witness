@@ -38,11 +38,7 @@ module Data.OpenWitness.Typeable where
 
 	instance Typeable2 (->) where
 	{
-		rep2 = SimpleOpenRep2 witFn where
-		{
-			witFn :: IOWitness (() -> ()); -- <- newIOWitness;
-			witFn = unsafeIOWitnessFromString "Data.OpenWitness.Typeable.witFn";
-		};
+		rep2 = SimpleOpenRep2 $(iowitness [t|() -> ()|]);
 	};
 
 	cast :: forall a b. (Typeable a,Typeable b) => a -> Maybe b;
