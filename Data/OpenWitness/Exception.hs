@@ -14,14 +14,14 @@ module Data.OpenWitness.Exception
 
 	-- | A key to match exceptions. The type variable is the data the exception carries.
 	;
-	type Exn = IOWitness;
+	newtype Exn e = MkExn (IOWitness e) deriving (SimpleWitness);
 
 	newtype ExnException = MkExnException (Any Exn);
 
     -- | Template Haskell function to declare 'Exn' exception keys.
     ;
     declexn :: TypeQ -> Q Exp;
-    declexn te = iowitness [t|Exn $(te)|];
+    declexn te = [| MkExn $(iowitness te) |];
 	
 	instance Typeable ExnException where
 	{
