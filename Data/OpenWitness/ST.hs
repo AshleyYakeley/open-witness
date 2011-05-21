@@ -11,7 +11,9 @@ module Data.OpenWitness.ST
 {
 	import Data.OpenWitness;
 	import Data.Witness.WitnessDict;
-	import Control.Monad.State;
+	import Control.Monad.Trans.State;
+	import Control.Monad.Trans.Class;
+	import Control.Monad.Fix;
 	
 	type ST s = StateT (WitnessDict (OpenWitness s)) (OW s);
 

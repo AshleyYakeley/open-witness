@@ -13,7 +13,10 @@ module Data.OpenWitness
 	import Unsafe.Coerce;
 	import System.IO.Unsafe (unsafePerformIO);
 	import Control.Concurrent.MVar;
-	import Control.Monad.State;
+	import Control.Monad.Fix;
+	import Control.Monad.Trans.State;
+	import Data.Functor.Identity;
+	import Data.Traversable;
 	import Data.HashTable;
 
 	import Language.Haskell.TH;
@@ -72,7 +75,7 @@ module Data.OpenWitness
 	-- | Generate a new 'OpenWitness' in 'OW'.
 	;
 	newOpenWitnessOW :: forall s a. OW s (OpenWitness s a);
-	newOpenWitnessOW = MkOW (State (\val -> (MkOpenWitness val,val+1)));
+	newOpenWitnessOW = MkOW (StateT (\val -> Identity (MkOpenWitness val,val+1)));
 	
 	-- | Run an 'OW' computation in 'IO'.
 	;

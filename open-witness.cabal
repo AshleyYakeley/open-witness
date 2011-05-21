@@ -1,35 +1,38 @@
 cabal-version: >= 1.6
 
-name:			open-witness
-version:		0.2
-license:		BSD3
-license-file:	LICENSE
-author:			Ashley Yakeley <ashley@semantic.org>
-maintainer:		Ashley Yakeley <ashley@semantic.org>
-build-depends:	base==4.*, mtl>=1.1, witness==0.2, random >=1.0, template-haskell >= 2.4
-category:		Data
-synopsis:		open witnesses
+name: open-witness
+version: 0.2
+license: BSD3
+license-file: LICENSE
+author: Ashley Yakeley <ashley@semantic.org>
+maintainer: Ashley Yakeley <ashley@semantic.org>
+category: Data
+synopsis: open witnesses
 description:
-	Open witnesses are witnesses that can witness to any type. However, they cannot be constructed, they can only be generated in the IO monad.
+  Open witnesses are witnesses that can witness to any type. However, they cannot be constructed, they can only be generated in the IO monad.
 
-	See the paper /Witnesses and Open Witnesses/ (<http://semantic.org/stuff/Open-Witnesses.pdf>).
-build-type:		Simple
-ghc-options: -Wall
-extensions:
-	RankNTypes
-	EmptyDataDecls
-	GeneralizedNewtypeDeriving
-	ScopedTypeVariables
-	GADTs
-	FlexibleContexts
-	FlexibleInstances
-	MultiParamTypeClasses
-	TemplateHaskell
-exposed-modules:
-	Data.OpenWitness
-	Data.OpenWitness.OpenRep
-	Data.OpenWitness.ST
-	Data.OpenWitness.Typeable
-	Data.OpenWitness.Dynamic
-	Data.OpenWitness.Exception
-other-modules:
+  See the paper /Witnesses and Open Witnesses/ (<http://semantic.org/stuff/Open-Witnesses.pdf>).
+build-type: Simple
+
+library
+  build-depends:
+    base==4.*, transformers>=0.2.2, witness==0.2, random >=1.0, template-haskell >= 2.4
+  extensions:
+    RankNTypes
+    EmptyDataDecls
+    GeneralizedNewtypeDeriving
+    ScopedTypeVariables
+    GADTs
+    FlexibleContexts
+    FlexibleInstances
+    MultiParamTypeClasses
+    TemplateHaskell
+  exposed-modules:
+    Data.OpenWitness
+    Data.OpenWitness.OpenRep
+    Data.OpenWitness.ST
+    Data.OpenWitness.Typeable
+    Data.OpenWitness.Dynamic
+    Data.OpenWitness.Exception
+  ghc-options: -Wall
+
