@@ -38,7 +38,7 @@ module Data.OpenWitness.Typeable where
 
 	instance Typeable2 (->) where
 	{
-		rep2 = SimpleOpenRep2 $(iowitness [t|() -> ()|]);
+		rep2 = SimpleOpenRep2 $(iowitness [t|T2 (->)|]);
 	};
 
 	cast :: forall a b. (Typeable a,Typeable b) => a -> Maybe b;

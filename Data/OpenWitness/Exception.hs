@@ -25,7 +25,7 @@ module Data.OpenWitness.Exception
 	
 	instance Typeable ExnException where
 	{
-		typeOf _ = mkTyConApp (mkTyCon "Data.OpenWitness.Exception.ExnException") [];
+		typeOf _ = mkTyConApp (mkTyCon3 "open-witness" "Data.OpenWitness.Exception" "ExnException") [];
 	};
 	
 	instance Show ExnException where
