@@ -1,5 +1,5 @@
 name: open-witness
-version: 0.2
+version: 0.3
 cabal-version: >=1.6
 build-type: Simple
 license: BSD3
@@ -11,10 +11,11 @@ description: Open witnesses are witnesses that can witness to any type. However,
 category: Data
 author: Ashley Yakeley <ashley@semantic.org>
 data-dir: ""
- 
+
 library
     build-depends: base ==4.*, random >=1.0, template-haskell >=2.4,
-                   transformers >=0.2.2, witness ==0.2
+                   transformers >=0.2.2, hashable >=1.1.2.5,
+                   witness ==0.3
     exposed-modules: Data.OpenWitness Data.OpenWitness.Dynamic
                      Data.OpenWitness.Exception Data.OpenWitness.OpenRep
                      Data.OpenWitness.ST Data.OpenWitness.Typeable
@@ -22,7 +23,7 @@ library
     buildable: True
     extensions: MultiParamTypeClasses RankNTypes ScopedTypeVariables
                 FlexibleContexts FlexibleInstances EmptyDataDecls KindSignatures
-                TemplateHaskell GeneralizedNewtypeDeriving GADTs
+                TemplateHaskell GeneralizedNewtypeDeriving GADTs PolyKinds
     hs-source-dirs: .
     ghc-options: -Wall
- 
+

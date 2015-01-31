@@ -15,7 +15,7 @@ haddock: configure
 	cabal haddock
 
 install: build
-	cabal install --user --enable-library-profiling --enable-executable-profiling --force-reinstall
+	cabal install --user --enable-library-profiling --enable-executable-profiling
 
 complete: haddock install
 
