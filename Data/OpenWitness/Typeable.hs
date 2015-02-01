@@ -45,14 +45,14 @@ module Data.OpenWitness.Typeable where
     cast :: forall a b. (Typeable a,Typeable b) => a -> Maybe b;
     cast a = do
     {
-        MkEqualType :: EqualType a b <- matchWitness rep rep;
+        MkEqualType :: EqualType a b <- testEquality rep rep;
         return a;
     };
 
     gcast :: forall a b c. (Typeable a,Typeable b) => c a -> Maybe (c b);
     gcast ca = do
     {
-        MkEqualType :: EqualType a b <- matchWitness rep rep;
+        MkEqualType :: EqualType a b <- testEquality rep rep;
         return ca;
     };
 
@@ -88,7 +88,7 @@ module Data.OpenWitness.Typeable where
     funResultTy (MkAnyWitness (ApplyOpenRep (ApplyOpenRep1 repFn' ta') tb')) (MkAnyWitness ta) = do
     {
         MkEqualType <- matchOpenRep2 repFn' (rep2 :: OpenRep2 (->));
-        MkEqualType <- matchWitness ta' ta;
+        MkEqualType <- testEquality ta' ta;
         return (MkAnyWitness tb');
     };
     funResultTy _ _ = Nothing;

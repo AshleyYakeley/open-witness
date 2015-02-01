@@ -13,12 +13,12 @@ module Data.OpenWitness.OpenRep where
     };
 
     matchOpenRep2 :: OpenRep2 a -> OpenRep2 b -> Maybe (EqualType (T2 a) (T2 b));
-    matchOpenRep2 (SimpleOpenRep2 wa) (SimpleOpenRep2 wb) = matchWitness wa wb;
+    matchOpenRep2 (SimpleOpenRep2 wa) (SimpleOpenRep2 wb) = testEquality wa wb;
 {-
     matchOpenRep2 (ApplyOpenRep1 tfa ta) (ApplyOpenRep1 tfb tb) = do
     {
         MkEqualType <- matchOpenRep2 tfa tfb;
-        MkEqualType <- matchWitness ta tb;
+        MkEqualType <- testEquality ta tb;
         return MkEqualType;
     };
     matchOpenRep2 _ _ = Nothing;
@@ -33,11 +33,11 @@ module Data.OpenWitness.OpenRep where
     };
 
     matchOpenRep1 :: OpenRep1 a -> OpenRep1 b -> Maybe (EqualType (T1 a) (T1 b));
-    matchOpenRep1 (SimpleOpenRep1 wa) (SimpleOpenRep1 wb) = matchWitness wa wb;
+    matchOpenRep1 (SimpleOpenRep1 wa) (SimpleOpenRep1 wb) = testEquality wa wb;
     matchOpenRep1 (ApplyOpenRep1 tfa ta) (ApplyOpenRep1 tfb tb) = do
     {
         MkEqualType <- matchOpenRep2 tfa tfb;
-        MkEqualType <- matchWitness ta tb;
+        MkEqualType <- testEquality ta tb;
         return MkEqualType;
     };
     matchOpenRep1 _ _ = Nothing;
@@ -50,21 +50,21 @@ module Data.OpenWitness.OpenRep where
         ApplyOpenRep :: OpenRep p -> OpenRep a -> OpenRep (p a);
     };
 
-    instance SimpleWitness OpenRep where
+    instance TestEquality OpenRep where
     {
-        matchWitness (SimpleOpenRep wa) (SimpleOpenRep wb) = matchWitness wa wb;
-        matchWitness (ApplyOpenRep tfa ta) (ApplyOpenRep tfb tb) = do
+        testEquality (SimpleOpenRep wa) (SimpleOpenRep wb) = testEquality wa wb;
+        testEquality (ApplyOpenRep tfa ta) (ApplyOpenRep tfb tb) = do
         {
-            MkEqualType <- matchWitness tfa tfb;
-            MkEqualType <- matchWitness ta tb;
+            MkEqualType <- testEquality tfa tfb;
+            MkEqualType <- testEquality ta tb;
             return MkEqualType;
         };
-        matchWitness _ _ = Nothing;
+        testEquality _ _ = Nothing;
     };
 
     instance Eq1 OpenRep where
     {
-        equals1 r1 r2 = isJust (matchWitness r1 r2);
+        equals1 r1 r2 = isJust (testEquality r1 r2);
     };
 -}
 }

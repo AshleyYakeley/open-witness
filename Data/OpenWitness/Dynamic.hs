@@ -27,7 +27,7 @@ module Data.OpenWitness.Dynamic where
     fromDynamic :: forall a. Typeable a => Dynamic -> Maybe a;
     fromDynamic (MkAny uq a) = do
     {
-        MkEqualType <- matchWitness uq (rep :: OpenRep a);
+        MkEqualType <- testEquality uq (rep :: OpenRep a);
         return a;
     };
 
@@ -38,7 +38,7 @@ module Data.OpenWitness.Dynamic where
     dynApply (MkAny (ApplyOpenRep (ApplyOpenRep1 repFn' rx') ry) f) (MkAny rx x) = do
     {
         MkEqualType <- matchOpenRep2 repFn' (rep2 :: OpenRep2 (->));
-        MkEqualType <- matchWitness rx' rx;
+        MkEqualType <- testEquality rx' rx;
         return (MkAny ry (f x));
     };
     dynApply _ _ = Nothing;

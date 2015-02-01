@@ -1,29 +1,47 @@
-name: open-witness
-version: 0.3
-cabal-version: >=1.6
-build-type: Simple
-license: BSD3
-license-file: LICENSE
-maintainer: Ashley Yakeley <ashley@semantic.org>
-synopsis: open witnesses
-description: Open witnesses are witnesses that can witness to any type. However, they cannot be constructed, they can only be generated in the IO monad.
-             See the paper /Witnesses and Open Witnesses/ (<http://semantic.org/stuff/Open-Witnesses.pdf>).
-category: Data
-author: Ashley Yakeley <ashley@semantic.org>
-data-dir: ""
+cabal-version:  >=1.14
+name:           open-witness
+version:        0.3
+x-follows-version-policy:
+license:        BSD3
+license-file:   LICENSE
+copyright:      Ashley Yakeley <ashley@semantic.org>
+author:         Ashley Yakeley <ashley@semantic.org>
+maintainer:     Ashley Yakeley <ashley@semantic.org>
+synopsis:       open witnesses
+description:
+    Open witnesses are witnesses that can witness to any type. However, they cannot be constructed, they can only be generated in the IO monad.
+    See the paper /Witnesses and Open Witnesses/ (<http://semantic.org/stuff/Open-Witnesses.pdf>).
+category:       Data
+build-type:     Simple
 
 library
-    build-depends: base ==4.*, random >=1.0, template-haskell >=2.4,
-                   transformers >=0.2.2, hashable >=1.1.2.5,
-                   witness ==0.3
-    exposed-modules: Data.OpenWitness Data.OpenWitness.Dynamic
-                     Data.OpenWitness.Exception Data.OpenWitness.OpenRep
-                     Data.OpenWitness.ST Data.OpenWitness.Typeable
-    exposed: True
-    buildable: True
-    extensions: MultiParamTypeClasses RankNTypes ScopedTypeVariables
-                FlexibleContexts FlexibleInstances EmptyDataDecls KindSignatures
-                TemplateHaskell GeneralizedNewtypeDeriving GADTs PolyKinds
     hs-source-dirs: .
+    default-language: Haskell98
+    default-extensions:
+        MultiParamTypeClasses
+        RankNTypes
+        FlexibleContexts
+        TypeOperators
+        FlexibleInstances
+        EmptyDataDecls
+        KindSignatures
+        TemplateHaskell
+        GeneralizedNewtypeDeriving
+        GADTs
+        PolyKinds
+        ScopedTypeVariables
+    build-depends:
+        base == 4.*,
+        random >= 1.0,
+        template-haskell >= 2.4,
+        transformers >= 0.2.2,
+        hashable >= 1.1.2.5,
+        witness == 0.3
+    exposed-modules:
+        Data.OpenWitness
+        Data.OpenWitness.Dynamic
+        Data.OpenWitness.Exception
+        Data.OpenWitness.OpenRep
+        Data.OpenWitness.ST
+        Data.OpenWitness.Typeable
     ghc-options: -Wall
-

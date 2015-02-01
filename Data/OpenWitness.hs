@@ -9,7 +9,11 @@ module Data.OpenWitness
     iowitness
 ) where
 {
-    import Data.Witness;
+    import Prelude;
+    import Control.Applicative;
+    import Data.List;
+    import System.Random;
+    import Language.Haskell.TH;
     import Unsafe.Coerce;
     import System.IO.Unsafe (unsafePerformIO);
     import Control.Concurrent.MVar;
@@ -18,23 +22,20 @@ module Data.OpenWitness
     import Data.Functor.Identity;
     import Data.Traversable;
     import Data.Hashable;
+    import Data.Witness;
 
-    import Language.Haskell.TH;
-    import Data.List;
-    import System.Random;
-    import Prelude;
 
-    unsafeSameType :: EqualType a b;
-    unsafeSameType = unsafeCoerce MkEqualType;
+    unsafeSameType :: a :~: b;
+    unsafeSameType = unsafeCoerce Refl;
 
     -- | A witness type that can witness to any type.
     -- But values cannot be constructed; they can only be generated in 'IO' and certain other monads.
     ;
     newtype OpenWitness s (a :: k) = MkOpenWitness Integer deriving Eq;
 
-    instance SimpleWitness (OpenWitness s) where
+    instance TestEquality (OpenWitness s) where
     {
-        matchWitness (MkOpenWitness ua) (MkOpenWitness ub) =
+        testEquality (MkOpenWitness ua) (MkOpenWitness ub) =
             if ua == ub then Just unsafeSameType else Nothing;
     };
 
@@ -65,7 +66,7 @@ module Data.OpenWitness
     -- | A runnable monad in which 'OpenWitness' values can be generated.
     -- The @s@ parameter plays the same role as it does in 'ST', preventing 'OpenWitness' values from one run being used in another.
     ;
-    newtype OW s a = MkOW (State OWState a) deriving (Functor,Monad,MonadFix);
+    newtype OW s a = MkOW (State OWState a) deriving (Functor,Applicative,Monad,MonadFix);
 
     -- | Run an 'OW' computation.
     ;

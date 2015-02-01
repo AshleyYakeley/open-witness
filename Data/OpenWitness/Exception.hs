@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveDataTypeable #-}
 {-# OPTIONS -fno-warn-unused-matches #-}
 module Data.OpenWitness.Exception
 (
@@ -16,22 +17,17 @@ module Data.OpenWitness.Exception
     ;
     newtype Exn (e :: *) = MkExn (IOWitness e);
 
-    instance SimpleWitness Exn where
+    instance TestEquality Exn where
     {
-        matchWitness (MkExn a) (MkExn b) = matchWitness a b;
+        testEquality (MkExn a) (MkExn b) = testEquality a b;
     };
 
-    newtype ExnException = MkExnException (Any Exn);
+    newtype ExnException = MkExnException (Any Exn) deriving Typeable;
 
     -- | Template Haskell function to declare 'Exn' exception keys.
     ;
     declexn :: TypeQ -> Q Exp;
     declexn te = [| MkExn $(iowitness te) |];
-
-    instance Typeable ExnException where
-    {
-        typeOf _ = mkTyConApp (mkTyCon3 "open-witness" "Data.OpenWitness.Exception" "ExnException") [];
-    };
 
     instance Show ExnException where
     {

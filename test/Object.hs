@@ -8,7 +8,7 @@ module Object where
 	matchObject :: OpenWitness s b -> Object s -> Maybe b;
 	matchObject uqb (MkObject uqa a) = do
 	{
-		MkEqualType <- matchWitness uqa uqb;
+		MkEqualType <- testEquality uqa uqb;
 		return a;
 	};
 
