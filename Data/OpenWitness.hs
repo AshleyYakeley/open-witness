@@ -10,7 +10,6 @@ module Data.OpenWitness
 ) where
 {
     import Prelude;
-    import Control.Applicative;
     import Data.List;
     import System.Random;
     import Language.Haskell.TH;
@@ -116,10 +115,6 @@ module Data.OpenWitness
         showLoc :: Loc -> String;
         showLoc l = (loc_filename l) ++ "=" ++ (loc_package l) ++ ":" ++ (loc_module l) ++ (show (loc_start l)) ++ (show (loc_end l));
 
-        freevarsPred :: Pred -> [Name];
-        freevarsPred (ClassP _ ts) = unionList (fmap freevarsType ts);
-        freevarsPred (EqualP t1 t2) = union (freevarsType t1) (freevarsType t2);
-
         unionList :: (Eq a) => [[a]] -> [a];
         unionList [] = [];
         unionList (l:ls) = union l (unionList ls);
@@ -130,7 +125,7 @@ module Data.OpenWitness
 
         freevarsType :: Language.Haskell.TH.Type -> [Name];
         freevarsType (ForallT tvbs ps t) =
-         (union (freevarsType t) (unionList (fmap freevarsPred ps))) \\ (fmap bindingvarTVB tvbs);
+         (union (freevarsType t) (unionList (fmap freevarsType ps))) \\ (fmap bindingvarTVB tvbs);
         freevarsType (VarT name) = [name];
         freevarsType (AppT t1 t2) = union (freevarsType t1) (freevarsType t2);
         freevarsType (SigT t _) = freevarsType t;
