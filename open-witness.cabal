@@ -31,12 +31,12 @@ library
         PolyKinds
         ScopedTypeVariables
     build-depends:
-        base == 4.*,
-        random >= 1.0,
-        template-haskell >= 2.4,
-        transformers >= 0.2.2,
-        hashable >= 1.1.2.5,
-        witness == 0.3.1
+        base >= 4.7 && < 5,
+        random,
+        template-haskell,
+        transformers,
+        hashable,
+        witness >= 0.3
     exposed-modules:
         Data.OpenWitness
         Data.OpenWitness.Dynamic
