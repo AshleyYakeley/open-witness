@@ -7,6 +7,8 @@ license-file:   LICENSE
 copyright:      Ashley Yakeley <ashley@semantic.org>
 author:         Ashley Yakeley <ashley@semantic.org>
 maintainer:     Ashley Yakeley <ashley@semantic.org>
+homepage:       https://github.com/AshleyYakeley/open-witness
+bug-reports:    https://github.com/AshleyYakeley/open-witness/issues
 synopsis:       open witnesses
 description:
     Open witnesses are witnesses that can witness to any type. However, they cannot be constructed, they can only be generated in the IO monad.
@@ -31,7 +33,7 @@ library
         PolyKinds
         ScopedTypeVariables
     build-depends:
-        base >= 4.7 && < 5,
+        base >= 4.8 && < 5,
         random,
         template-haskell,
         transformers,
