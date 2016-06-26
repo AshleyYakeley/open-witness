@@ -38,7 +38,7 @@ library
         template-haskell,
         transformers,
         hashable,
-        witness >= 0.3
+        witness == 0.4
     exposed-modules:
         Data.OpenWitness
         Data.OpenWitness.Dynamic

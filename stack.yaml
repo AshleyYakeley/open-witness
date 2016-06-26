@@ -1,2 +1,4 @@
 packages: [.]
 resolver: lts-6.4
+extra-deps:
+  - witness-0.4
