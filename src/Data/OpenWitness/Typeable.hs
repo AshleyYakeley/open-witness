@@ -35,6 +35,56 @@ module Data.OpenWitness.Typeable where
         typeRep = SimpleTypeRep $(iowitness [t|Constraint|]);
     };
 
+    instance Typeable TypeRep where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|TypeRep|]);
+    };
+
+    instance Typeable Typeable where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|Typeable|]);
+    };
+
+    instance Typeable () where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|()|]);
+    };
+
+    instance Typeable (,) where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|(,)|]);
+    };
+
+    instance Typeable Either where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|Either|]);
+    };
+
+    instance Typeable Maybe where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|Maybe|]);
+    };
+
+    instance Typeable [] where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|[]|]);
+    };
+
+    instance Typeable Bool where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|Bool|]);
+    };
+
+    instance Typeable Char where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|Char|]);
+    };
+
+    instance Typeable Int where
+    {
+        typeRep = SimpleTypeRep $(iowitness [t|Int|]);
+    };
+
     cast :: forall (a :: *) (b :: *). (Typeable a,Typeable b) => a -> Maybe b;
     cast a = do
     {
