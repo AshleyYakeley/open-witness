@@ -31,11 +31,11 @@ module Data.OpenWitness.Dynamic where
         Refl <- testEquality uq (typeRep :: TypeRep a);
         return a;
     };
-{-
+{- GHC panic
     -- * Applying functions of dynamic type
     ;
 
-    dynApply :: Typeable (->) => Dynamic -> Dynamic -> Maybe Dynamic;
+    dynApply :: Dynamic -> Dynamic -> Maybe Dynamic;
     dynApply (MkAny (ApplyTypeRep (ApplyTypeRep repFn' rx') ry) f) (MkAny rx x) = do
     {
         ReflH <- testHetEquality repFn' (typeRep :: TypeRep (->));
@@ -44,14 +44,13 @@ module Data.OpenWitness.Dynamic where
     };
     dynApply _ _ = Nothing;
 
-    dynApp :: Typeable (->) => Dynamic -> Dynamic -> Dynamic;
+    dynApp :: Dynamic -> Dynamic -> Dynamic;
     dynApp a b = case (dynApply a b) of
     {
         Just d -> d;
         _ -> error "Type error in dynamic application.\nCan't apply function to argument";
     };
-
+-}
     dynTypeRep :: Dynamic -> AnyWitness (TypeRep :: * -> *);
     dynTypeRep (MkAny r _) = MkAnyWitness r;
--}
 }
