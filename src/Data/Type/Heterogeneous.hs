@@ -9,6 +9,7 @@ module Data.Type.Heterogeneous where
     };
 
     -- | somewhat awkwardly named
+    ;
     homoHetEq :: forall (k :: *) (a :: k) (b :: k). HetEq a b -> a :~: b;
     homoHetEq ReflH = Refl;
 
