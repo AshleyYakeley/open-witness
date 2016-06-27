@@ -1,4 +1,4 @@
 packages: [.]
-resolver: lts-6.4
+resolver: nightly-2016-06-21
 extra-deps:
   - witness-0.4

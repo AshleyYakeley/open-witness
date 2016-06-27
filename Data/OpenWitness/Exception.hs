@@ -5,6 +5,7 @@ module Data.OpenWitness.Exception
     Exn, declexn, throw, catch
 ) where
 {
+    import Data.Kind;
     import Data.OpenWitness;
     import Data.Witness;
     import Data.Maybe;

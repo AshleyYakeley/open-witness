@@ -10,6 +10,7 @@ module Data.OpenWitness
 ) where
 {
     import Prelude;
+    import Data.Kind;
     import Data.List;
     import System.Random;
     import Language.Haskell.TH;
@@ -22,20 +23,29 @@ module Data.OpenWitness
     import Data.Traversable;
     import Data.Hashable;
     import Data.Witness;
+    import Data.Type.Heterogeneous;
 
 
-    unsafeSameType :: a :~: b;
-    unsafeSameType = unsafeCoerce Refl;
+    unsafeSameType :: HetEq a b;
+    unsafeSameType = unsafeCoerce ReflH;
 
     -- | A witness type that can witness to any type.
     -- But values cannot be constructed; they can only be generated in 'IO' and certain other monads.
     ;
-    newtype OpenWitness s (a :: k) = MkOpenWitness Integer deriving Eq;
+    newtype OpenWitness :: * -> forall (k :: *). k -> * where
+    {
+        MkOpenWitness :: Integer -> OpenWitness s a;
+    } deriving Eq;
+
+    instance TestHetEquality (OpenWitness s) where
+    {
+        testHetEquality (MkOpenWitness ua) (MkOpenWitness ub) =
+            if ua == ub then Just unsafeSameType else Nothing;
+    };
 
     instance TestEquality (OpenWitness s) where
     {
-        testEquality (MkOpenWitness ua) (MkOpenWitness ub) =
-            if ua == ub then Just unsafeSameType else Nothing;
+        testEquality wa wb = fmap homoHetEq $ testHetEquality wa wb;
     };
 
     -- | The @s@ type for running 'OW' in 'IO'.

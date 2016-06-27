@@ -32,14 +32,16 @@ library
         GADTs
         PolyKinds
         ScopedTypeVariables
+        TypeInType
     build-depends:
-        base >= 4.8 && < 5,
+        base >= 4.9 && < 5,
         random,
         template-haskell,
         transformers,
         hashable,
         witness == 0.4
     exposed-modules:
+        Data.Type.Heterogeneous
         Data.OpenWitness
         Data.OpenWitness.Dynamic
         Data.OpenWitness.Exception
