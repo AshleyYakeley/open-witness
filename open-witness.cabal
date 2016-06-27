@@ -30,9 +30,9 @@ library
         TemplateHaskell
         GeneralizedNewtypeDeriving
         GADTs
-        PolyKinds
         ScopedTypeVariables
         TypeInType
+        ConstraintKinds
         UndecidableInstances
     build-depends:
         base >= 4.9 && < 5,
@@ -40,6 +40,7 @@ library
         template-haskell,
         transformers,
         hashable,
+        constraints,
         witness == 0.4
     exposed-modules:
         Data.Type.Heterogeneous
@@ -49,4 +50,5 @@ library
         Data.OpenWitness.Dynamic
         Data.OpenWitness.Exception
         Data.OpenWitness.ST
+        Data.OpenWitness.Instance
     ghc-options: -Wall
