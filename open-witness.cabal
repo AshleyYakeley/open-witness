@@ -33,6 +33,7 @@ library
         PolyKinds
         ScopedTypeVariables
         TypeInType
+        UndecidableInstances
     build-depends:
         base >= 4.9 && < 5,
         random,
@@ -43,9 +44,9 @@ library
     exposed-modules:
         Data.Type.Heterogeneous
         Data.OpenWitness
+        Data.OpenWitness.TypeRep
+        Data.OpenWitness.Typeable
         Data.OpenWitness.Dynamic
         Data.OpenWitness.Exception
-        Data.OpenWitness.OpenRep
         Data.OpenWitness.ST
-        Data.OpenWitness.Typeable
     ghc-options: -Wall

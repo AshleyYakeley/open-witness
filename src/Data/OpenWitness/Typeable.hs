@@ -1,102 +1,58 @@
 -- | This is an approximate re-implementation of "Data.Typeable" using open witnesses.
 module Data.OpenWitness.Typeable where
 {
-{-
-    import Data.OpenWitness.OpenRep;
-    import Data.OpenWitness;
+    import Data.Kind;
+    import Data.OpenWitness.TypeRep;
+    --import Data.OpenWitness;
     import Data.Witness;
 
     -- | types of kind @*@ with a representation
     ;
-    class Typeable a where
+    class Typeable (a :: k) where
     {
-        rep :: OpenRep a;
+        typeRep :: TypeRep a;
     };
 
-    -- | types of kind @* -> *@ with a representation
-    ;
-    class Typeable1 t where
+    instance (Typeable (f :: k1 -> k2),Typeable (a :: k1)) => Typeable (f a) where
     {
-        rep1 :: OpenRep1 t;
+        typeRep = ApplyTypeRep typeRep typeRep;
     };
-
-    -- | types of kind @* -> * -> *@ with a representation
-    ;
-    class Typeable2 t where
+{-
+    instance Typeable (->) where
     {
-        rep2 :: OpenRep2 t;
+        typeRep = SimpleTypeRep $(iowitness [t|(->)|]);
     };
-
-    instance (Typeable1 f,Typeable a) => Typeable (f a) where
-    {
-        rep = ApplyOpenRep rep1 rep;
-    };
-
-    instance (Typeable2 f,Typeable a) => Typeable1 (f a) where
-    {
-        rep1 = ApplyOpenRep1 rep2 rep;
-    };
-
-    instance Typeable2 (->) where
-    {
-        rep2 = SimpleOpenRep2 $(iowitness [t|T2 (->)|]);
-    };
-
-    cast :: forall a b. (Typeable a,Typeable b) => a -> Maybe b;
+-}
+    cast :: forall (a :: *) (b :: *). (Typeable a,Typeable b) => a -> Maybe b;
     cast a = do
     {
-        MkEqualType :: EqualType a b <- testEquality rep rep;
+        Refl :: a :~: b <- testEquality typeRep typeRep;
         return a;
     };
 
-    gcast :: forall a b c. (Typeable a,Typeable b) => c a -> Maybe (c b);
+    gcast :: forall (k :: *) (a :: k) (b :: k) (c :: k -> *). (Typeable a,Typeable b) => c a -> Maybe (c b);
     gcast ca = do
     {
-        MkEqualType :: EqualType a b <- testEquality rep rep;
+        Refl :: a :~: b <- testEquality typeRep typeRep;
         return ca;
     };
-
-    -- | represents a type of kind @*@
-    ;
-    type TypeRep = AnyWitness OpenRep;
-
-    typeOf :: forall t. (Typeable t) => t -> TypeRep;
-    typeOf _ = MkAnyWitness (rep :: OpenRep t);
-
-    -- | represents a type of kind @* -> *@
-    ;
-    type TypeRep1 = AnyWitness1 OpenRep1;
-
-    typeOf1 :: forall t a. (Typeable1 t) => t a -> TypeRep1;
-    typeOf1 _ = MkAnyWitness1 (rep1 :: OpenRep1 t);
-
-    -- | represents a type of kind @* -> * -> *@
-    ;
-    type TypeRep2 = AnyWitness2 OpenRep2;
-
-    typeOf2 :: forall t a b. (Typeable2 t) => t a b -> TypeRep2;
-    typeOf2 _ = MkAnyWitness2 (rep2 :: OpenRep2 t);
-
+{-
     -- | given representations of @a@ and @b@, make a representation of @a -> b@
     ;
-    mkFunTy :: TypeRep -> TypeRep -> TypeRep;
-    mkFunTy (MkAnyWitness ta) (MkAnyWitness tb) = MkAnyWitness (ApplyOpenRep (ApplyOpenRep1 (rep2 :: OpenRep2 (->)) ta) tb);
+    mkFunTy :: TypeRep a -> TypeRep b -> TypeRep (a -> b);
+    mkFunTy (MkAnyWitness ta) (MkAnyWitness tb) = MkAnyWitness (ApplyTypeRep (ApplyTypeRep1 (rep2 :: TypeRep2 (->)) ta) tb);
 
     -- | given representations of @a -> b@ and @a@, make a representation of @b@ (otherwise not)
     ;
-    funResultTy :: TypeRep -> TypeRep -> Maybe TypeRep;
-    funResultTy (MkAnyWitness (ApplyOpenRep (ApplyOpenRep1 repFn' ta') tb')) (MkAnyWitness ta) = do
+    funResultTy :: TypeRep (a -> b) -> TypeRep a -> Maybe (TypeRep b);
+    funResultTy (MkAnyWitness (ApplyTypeRep (ApplyTypeRep1 repFn' ta') tb')) (MkAnyWitness ta) = do
     {
-        MkEqualType <- matchOpenRep2 repFn' (rep2 :: OpenRep2 (->));
+        MkEqualType <- matchTypeRep2 repFn' (rep2 :: TypeRep2 (->));
         MkEqualType <- testEquality ta' ta;
         return (MkAnyWitness tb');
     };
     funResultTy _ _ = Nothing;
-
-    mkAppTy :: TypeRep1 -> TypeRep -> TypeRep;
-    mkAppTy (MkAnyWitness1 tf) (MkAnyWitness ta) = MkAnyWitness (ApplyOpenRep tf ta);
-
-    mkAppTy1 :: TypeRep2 -> TypeRep -> TypeRep1;
-    mkAppTy1 (MkAnyWitness2 tf) (MkAnyWitness ta) = MkAnyWitness1 (ApplyOpenRep1 tf ta);
 -}
+    mkAppTy :: forall (k1 :: *) (k2 :: *) (f :: k1 -> k2) (a :: k1). TypeRep f -> TypeRep a -> TypeRep (f a);
+    mkAppTy = ApplyTypeRep;
 }
