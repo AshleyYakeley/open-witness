@@ -103,7 +103,7 @@ module Data.OpenWitness.Typeable where
     ;
     mkFunTy :: TypeRep a -> TypeRep b -> TypeRep (a -> b);
     mkFunTy ta tb = ApplyTypeRep (ApplyTypeRep (typeRep :: TypeRep (->)) ta) tb;
-{- GHC panic
+
     -- | given representations of @a -> b@ and @a@, make a representation of @b@ (otherwise not)
     ;
     funResultTy :: TypeRep (a -> b) -> TypeRep a -> Maybe (TypeRep b);
@@ -114,7 +114,7 @@ module Data.OpenWitness.Typeable where
         return tb';
     };
     funResultTy _ _ = Nothing;
--}
+
     mkAppTy :: forall (k1 :: *) (k2 :: *) (f :: k1 -> k2) (a :: k1). TypeRep f -> TypeRep a -> TypeRep (f a);
     mkAppTy = ApplyTypeRep;
 }
