@@ -3,7 +3,7 @@ module Data.OpenWitness.Dynamic where
 {
     import Data.Kind;
     import Data.Witness;
-    --import Data.Type.Heterogeneous;
+    import Data.Type.Heterogeneous;
     import Data.OpenWitness.TypeRep;
     import Data.OpenWitness.Typeable;
 
@@ -31,7 +31,7 @@ module Data.OpenWitness.Dynamic where
         Refl <- testEquality uq (typeRep :: TypeRep a);
         return a;
     };
-{- GHC panic
+
     -- * Applying functions of dynamic type
     ;
 
@@ -50,7 +50,7 @@ module Data.OpenWitness.Dynamic where
         Just d -> d;
         _ -> error "Type error in dynamic application.\nCan't apply function to argument";
     };
--}
+
     dynTypeRep :: Dynamic -> AnyWitness (TypeRep :: * -> *);
     dynTypeRep (MkAny r _) = MkAnyWitness r;
 }

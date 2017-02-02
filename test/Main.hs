@@ -3,9 +3,8 @@ module Main where
 {
 	import Data.OpenWitness.ST;
 	import Data.OpenWitness.Exception;
-	import Unsafe;
 	import Prelude hiding (catch);
-	
+
 	stuff :: ST s [Int];
 	stuff = do
 	{
@@ -19,12 +18,12 @@ module Main where
 		b2 <- readSTRef rb;
 		return [a1,b1,a2,b2];
 	};
-	
+
 	intExn :: Exn Int;
 	intExn = $(declexn [t|Int|]);
 	stringExn :: Exn String;
 	stringExn = $(declexn [t|String|]);
-	
+
 	showCatch :: IO a -> IO ();
 	showCatch f = ((do
 	{
@@ -33,12 +32,11 @@ module Main where
 	}
 	`catch` intExn) (\i -> putStrLn ("caught intExn " ++ (show i)))
 	`catch` stringExn) (\s -> putStrLn ("caught stringExn " ++ (show s)));
-	
+
 	main :: IO ();
 	main = do
 	{
 		putStrLn (show (runST stuff));
-		putStrLn (show (coerce 'A' :: Int));
 		showCatch (return "hello");
 		showCatch (throw intExn 3);
 		showCatch (throw stringExn "text");

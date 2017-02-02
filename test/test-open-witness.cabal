@@ -4,21 +4,21 @@ license:		BSD3
 license-file:	../LICENSE
 author:			Ashley Yakeley <ashley@semantic.org>
 maintainer:		Ashley Yakeley <ashley@semantic.org>
-build-depends:	base==4.*, mtl>=1.1, witness==0.2, open-witness==0.2
+build-depends:	base==4.*, mtl>=1.1, witness==0.4, open-witness==0.4
 category:		Data
 synopsis:		test for open witnesses
 build-type:		Simple
 extensions:
-	RankNTypes 
-	EmptyDataDecls 
-	GeneralizedNewtypeDeriving 
-	ScopedTypeVariables 
-	GADTs 
-	PatternSignatures 
-	FlexibleContexts 
+	RankNTypes
+	EmptyDataDecls
+	GeneralizedNewtypeDeriving
+	ScopedTypeVariables
+	GADTs
+	PatternSignatures
+	FlexibleContexts
 	MultiParamTypeClasses
 	TemplateHaskell
 
 executable: Test
 main-is: Main.hs
-other-modules: Object Unsafe
+other-modules: Object
