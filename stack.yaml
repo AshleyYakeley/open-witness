@@ -1,6 +1,4 @@
 resolver: nightly-2017-02-02
-packages:
-    - .
-    - test
+packages: [.]
 extra-deps:
     - witness-0.4
