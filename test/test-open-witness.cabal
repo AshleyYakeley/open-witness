@@ -14,7 +14,6 @@ extensions:
 	GeneralizedNewtypeDeriving
 	ScopedTypeVariables
 	GADTs
-	PatternSignatures
 	FlexibleContexts
 	MultiParamTypeClasses
 	TemplateHaskell
