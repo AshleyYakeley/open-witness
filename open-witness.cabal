@@ -35,7 +35,7 @@ library
         ConstraintKinds
         UndecidableInstances
     build-depends:
-        base >= 4.9.1,
+        base >= 4.9.1 && < 5,
         random,
         template-haskell,
         transformers,
