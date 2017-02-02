@@ -4,6 +4,8 @@ module Main where
     import Data.OpenWitness.ST;
     import Data.OpenWitness.Exception;
     import Prelude;
+    import Test.Tasty;
+    import Test.Tasty.HUnit;
 
     stuff :: ST s [Int];
     stuff = do
@@ -19,28 +21,43 @@ module Main where
         return [a1,b1,a2,b2];
     };
 
+    testST :: TestTree;
+    testST = testCase "ST" $ assertEqual "vals" [3,4,5,7] $ runST stuff;
+
     intExn :: Exn Int;
     intExn = $(declexn [t|Int|]);
     stringExn :: Exn String;
     stringExn = $(declexn [t|String|]);
 
-    showCatch :: IO a -> IO ();
-    showCatch f = ((do
+    data Caught = NotCaught | IntCaught Int | StringCaught String deriving (Eq,Show);
+
+    getCaught :: IO a -> IO Caught;
+    getCaught f = ((do
     {
         _ <- f;
-        putStrLn "not caught";
+        return NotCaught;
     }
-    `catch` intExn) (\i -> putStrLn ("caught intExn " ++ (show i)))
-    `catch` stringExn) (\s -> putStrLn ("caught stringExn " ++ (show s)));
+    `catch` intExn) (\x -> return (IntCaught x))
+    `catch` stringExn) (\x -> return (StringCaught x));
+
+    testCaught :: String -> Caught -> IO a -> TestTree;
+    testCaught name expected f = testCase name $ do
+    {
+        result <- getCaught f;
+        assertEqual "caught" expected result;
+    };
+
+    tests :: TestTree;
+    tests = testGroup "test"
+    [
+        testST,
+        testCaught "return" NotCaught $ return "hello",
+        testCaught "throw intExn 3" (IntCaught 3) $ throw intExn 3,
+        testCaught "throw stringExn text" (StringCaught "text") $ throw stringExn "text",
+        testCaught "throw intExn 67" (IntCaught 67) $ throw intExn 67,
+        testCaught "throw stringExn str" (StringCaught "str") $ throw stringExn "str"
+    ];
 
     main :: IO ();
-    main = do
-    {
-        putStrLn (show (runST stuff));
-        showCatch (return "hello");
-        showCatch (throw intExn 3);
-        showCatch (throw stringExn "text");
-        showCatch (throw intExn 67);
-        showCatch (throw stringExn "str");
-    };
+    main = defaultMain tests;
 }

@@ -70,7 +70,9 @@ test-suite tests
         base,
         mtl,
         witness,
-        open-witness
+        open-witness,
+        tasty,
+        tasty-hunit
     main-is: Main.hs
     other-modules:
         Object
