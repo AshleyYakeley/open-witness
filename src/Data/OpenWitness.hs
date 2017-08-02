@@ -35,7 +35,12 @@ module Data.OpenWitness
     newtype OpenWitness :: * -> forall (k :: *). k -> * where
     {
         MkOpenWitness :: Integer -> OpenWitness s a;
-    } deriving Eq;
+    };
+
+    instance Eq (OpenWitness s a) where
+    {
+        (MkOpenWitness p) == (MkOpenWitness q) = p == q;
+    };
 
     instance TestHetEquality (OpenWitness s) where
     {

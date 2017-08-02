@@ -26,7 +26,7 @@ module Data.OpenWitness.ST
     fixST :: (a -> ST s a) -> ST s a;
     fixST = mfix;
 
-    type STRef = OpenWitness;
+    type STRef s = OpenWitness s;
 
     newSTRef :: a -> ST s (STRef s a);
     newSTRef a = do
