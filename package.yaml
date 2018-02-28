@@ -1,0 +1,74 @@
+name: open-witness
+version: "0.4.0.1"
+author: Ashley Yakeley
+copyright: (c) 2017-2018 Ashley Yakeley
+license: BSD3
+license-file: LICENSE
+maintainer: <ashley@semantic.org>
+homepage: https://github.com/AshleyYakeley/open-witness
+bug-reports: https://github.com/AshleyYakeley/open-witness/issues
+synopsis: open witnesses
+description:
+    Open witnesses are witnesses that can witness to any type. However, they cannot be constructed, they can only be generated in the IO monad.
+    See the paper /Witnesses and Open Witnesses/ (<http://semantic.org/stuff/Open-Witnesses.pdf>).
+category: Data
+build-type: Simple
+
+library:
+    source-dirs: src
+    default-extensions:
+        - MultiParamTypeClasses
+        - RankNTypes
+        - FlexibleContexts
+        - TypeOperators
+        - FlexibleInstances
+        - EmptyDataDecls
+        - KindSignatures
+        - TemplateHaskell
+        - GeneralizedNewtypeDeriving
+        - GADTs
+        - ScopedTypeVariables
+        - TypeInType
+        - ConstraintKinds
+        - UndecidableInstances
+    dependencies:
+        - base >= 4.9.1 && < 5
+        - random
+        - template-haskell
+        - transformers
+        - hashable
+        - constraints
+        - witness == 0.4
+    exposed-modules:
+        - Data.Type.Heterogeneous
+        - Data.OpenWitness
+        - Data.OpenWitness.TypeRep
+        - Data.OpenWitness.Typeable
+        - Data.OpenWitness.Dynamic
+        - Data.OpenWitness.Exception
+        - Data.OpenWitness.ST
+        - Data.OpenWitness.Instance
+    ghc-options: -Wall
+
+tests:
+    tests:
+        source-dirs: test
+        default-extensions:
+            - RankNTypes
+            - EmptyDataDecls
+            - GeneralizedNewtypeDeriving
+            - ScopedTypeVariables
+            - GADTs
+            - FlexibleContexts
+            - MultiParamTypeClasses
+            - TemplateHaskell
+        dependencies:
+            - base
+            - mtl
+            - witness
+            - open-witness
+            - tasty
+            - tasty-hunit
+        main: Main.hs
+        other-modules:
+            - Object
