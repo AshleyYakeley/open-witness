@@ -1,24 +1,21 @@
 module Object where
-{
-    import Data.Witness;
-    import Data.OpenWitness;
 
-    data Object s = forall a. MkObject (OpenWitness s a) a;
+import Data.OpenWitness
+import Data.Witness
 
-    matchObject :: OpenWitness s b -> Object s -> Maybe b;
-    matchObject uqb (MkObject uqa a) = do
-    {
-        Refl <- testEquality uqa uqb;
-        return a;
-    };
+data Object s =
+    forall a. MkObject (OpenWitness s a)
+                       a
 
-    makeConversions :: OpenWitness s b -> (b -> Object s,Object s -> Maybe b);
-    makeConversions wit = (MkObject wit,matchObject wit);
+matchObject :: OpenWitness s b -> Object s -> Maybe b
+matchObject uqb (MkObject uqa a) = do
+    Refl <- testEquality uqa uqb
+    return a
 
-    getConversions :: OW s (b -> Object s,Object s -> Maybe b);
-    getConversions = do
-    {
-        wit <- newOpenWitnessOW;
-        return (makeConversions wit);
-    };
-}
+makeConversions :: OpenWitness s b -> (b -> Object s, Object s -> Maybe b)
+makeConversions wit = (MkObject wit, matchObject wit)
+
+getConversions :: OW s (b -> Object s, Object s -> Maybe b)
+getConversions = do
+    wit <- newOpenWitnessOW
+    return (makeConversions wit)

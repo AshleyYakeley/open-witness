@@ -1,120 +1,86 @@
 -- | This is an approximate re-implementation of "Data.Typeable" using open witnesses.
 module Data.OpenWitness.Typeable where
-{
-    import Data.Kind;
-    import Data.OpenWitness.TypeRep;
-    import Data.OpenWitness;
-    import Data.Witness;
 
-    -- | types of kind @*@ with a representation
-    ;
-    class Typeable (a :: k) where
-    {
-        typeRep :: TypeRep a;
-    };
+import Data.Kind
+import Data.OpenWitness
+import Data.OpenWitness.TypeRep
+import Data.Witness
 
-    instance (Typeable (f :: k1 -> k2),Typeable (a :: k1)) => Typeable (f a) where
-    {
-        typeRep = ApplyTypeRep typeRep typeRep;
-    };
+-- | types of kind @*@ with a representation
+class Typeable (a :: k) where
+    typeRep :: TypeRep a
 
-    instance Typeable Type where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|Type|]);
-    };
+instance (Typeable (f :: k1 -> k2), Typeable (a :: k1)) => Typeable (f a) where
+    typeRep = ApplyTypeRep typeRep typeRep
 
-    type Fun = (->);
+instance Typeable Type where
+    typeRep = SimpleTypeRep $(iowitness [t|Type|])
 
-    instance Typeable (->) where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|Fun|]);
-    };
+type Fun = (->)
 
-    instance Typeable Constraint where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|Constraint|]);
-    };
+instance Typeable (->) where
+    typeRep = SimpleTypeRep $(iowitness [t|Fun|])
 
-    instance Typeable TypeRep where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|TypeRep|]);
-    };
+instance Typeable Constraint where
+    typeRep = SimpleTypeRep $(iowitness [t|Constraint|])
 
-    instance Typeable Typeable where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|Typeable|]);
-    };
+instance Typeable TypeRep where
+    typeRep = SimpleTypeRep $(iowitness [t|TypeRep|])
 
-    instance Typeable () where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|()|]);
-    };
+instance Typeable Typeable where
+    typeRep = SimpleTypeRep $(iowitness [t|Typeable|])
 
-    instance Typeable (,) where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|(,)|]);
-    };
+instance Typeable () where
+    typeRep = SimpleTypeRep $(iowitness [t|()|])
 
-    instance Typeable Either where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|Either|]);
-    };
+instance Typeable (,) where
+    typeRep = SimpleTypeRep $(iowitness [t|(,)|])
 
-    instance Typeable Maybe where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|Maybe|]);
-    };
+instance Typeable Either where
+    typeRep = SimpleTypeRep $(iowitness [t|Either|])
 
-    instance Typeable [] where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|[]|]);
-    };
+instance Typeable Maybe where
+    typeRep = SimpleTypeRep $(iowitness [t|Maybe|])
 
-    instance Typeable Bool where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|Bool|]);
-    };
+instance Typeable [] where
+    typeRep = SimpleTypeRep $(iowitness [t|[]|])
 
-    instance Typeable Char where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|Char|]);
-    };
+instance Typeable Bool where
+    typeRep = SimpleTypeRep $(iowitness [t|Bool|])
 
-    instance Typeable Int where
-    {
-        typeRep = SimpleTypeRep $(iowitness [t|Int|]);
-    };
+instance Typeable Char where
+    typeRep = SimpleTypeRep $(iowitness [t|Char|])
 
-    cast :: forall (a :: *) (b :: *). (Typeable a,Typeable b) => a -> Maybe b;
-    cast a = do
-    {
-        Refl :: a :~: b <- testEquality typeRep typeRep;
-        return a;
-    };
+instance Typeable Int where
+    typeRep = SimpleTypeRep $(iowitness [t|Int|])
 
-    gcast :: forall (k :: *) (a :: k) (b :: k) (c :: k -> *). (Typeable a,Typeable b) => c a -> Maybe (c b);
-    gcast ca = do
-    {
-        Refl :: a :~: b <- testEquality typeRep typeRep;
-        return ca;
-    };
+cast ::
+       forall (a :: *) (b :: *). (Typeable a, Typeable b)
+    => a
+    -> Maybe b
+cast a = do
+    Refl :: a :~: b <- testEquality typeRep typeRep
+    return a
 
-    -- | given representations of @a@ and @b@, make a representation of @a -> b@
-    ;
-    mkFunTy :: TypeRep a -> TypeRep b -> TypeRep (a -> b);
-    mkFunTy ta tb = ApplyTypeRep (ApplyTypeRep (typeRep :: TypeRep (->)) ta) tb;
+gcast ::
+       forall (k :: *) (a :: k) (b :: k) (c :: k -> *). (Typeable a, Typeable b)
+    => c a
+    -> Maybe (c b)
+gcast ca = do
+    Refl :: a :~: b <- testEquality typeRep typeRep
+    return ca
 
-    -- | given representations of @a -> b@ and @a@, make a representation of @b@ (otherwise not)
-    ;
-    funResultTy :: TypeRep (a -> b) -> TypeRep a -> Maybe (TypeRep b);
-    funResultTy (ApplyTypeRep (ApplyTypeRep repFn' ta') tb') ta = do
-    {
-        Refl <- testEquality repFn' (typeRep :: TypeRep (->));
-        Refl <- testEquality ta' ta;
-        return tb';
-    };
-    funResultTy _ _ = Nothing;
+-- | given representations of @a@ and @b@, make a representation of @a -> b@
+mkFunTy :: TypeRep a -> TypeRep b -> TypeRep (a -> b)
+mkFunTy ta tb = ApplyTypeRep (ApplyTypeRep (typeRep :: TypeRep (->)) ta) tb
 
-    mkAppTy :: forall (k1 :: *) (k2 :: *) (f :: k1 -> k2) (a :: k1). TypeRep f -> TypeRep a -> TypeRep (f a);
-    mkAppTy = ApplyTypeRep;
-}
+-- | given representations of @a -> b@ and @a@, make a representation of @b@ (otherwise not)
+funResultTy :: TypeRep (a -> b) -> TypeRep a -> Maybe (TypeRep b)
+funResultTy (ApplyTypeRep (ApplyTypeRep repFn' ta') tb') ta = do
+    Refl <- testEquality repFn' (typeRep :: TypeRep (->))
+    Refl <- testEquality ta' ta
+    return tb'
+funResultTy _ _ = Nothing
+
+mkAppTy :: forall (k1 :: *) (k2 :: *) (f :: k1 -> k2) (a :: k1). TypeRep f -> TypeRep a -> TypeRep (f a)
+mkAppTy = ApplyTypeRep
