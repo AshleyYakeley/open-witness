@@ -38,7 +38,7 @@ library:
         - transformers
         - hashable
         - constraints
-        - witness == 0.4
+        - witness >= 0.4
     exposed-modules:
         - Data.Type.Heterogeneous
         - Data.OpenWitness
