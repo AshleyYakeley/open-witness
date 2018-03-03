@@ -17,20 +17,53 @@ build-type: Simple
 library:
     source-dirs: src
     default-extensions:
-        - MultiParamTypeClasses
-        - RankNTypes
-        - FlexibleContexts
-        - TypeOperators
-        - FlexibleInstances
-        - EmptyDataDecls
-        - KindSignatures
-        - TemplateHaskell
-        - GeneralizedNewtypeDeriving
-        - GADTs
-        - ScopedTypeVariables
-        - TypeInType
-        - ConstraintKinds
-        - UndecidableInstances
+      - AllowAmbiguousTypes
+      - Arrows
+      - ConstraintKinds
+      - DataKinds
+      - DefaultSignatures
+      - EmptyCase
+      - EmptyDataDecls
+      - ExistentialQuantification
+      - FlexibleContexts
+      - FlexibleInstances
+      - ForeignFunctionInterface
+      - FunctionalDependencies
+      - GADTs
+      - GeneralizedNewtypeDeriving
+      - ImplicitParams
+      - InstanceSigs
+      - KindSignatures
+      - LambdaCase
+      - MonadFailDesugaring
+      - MultiParamTypeClasses
+      - NoImplicitPrelude
+      - OverloadedLabels
+      - OverloadedStrings
+      - PatternGuards
+      - PatternSynonyms
+      - PolyKinds
+      - RankNTypes
+      - RecordWildCards
+      - RecursiveDo
+      - ScopedTypeVariables
+      - StandaloneDeriving
+      - TemplateHaskell
+      - TypeApplications
+      - TypeFamilies
+      - TypeInType
+      - TypeOperators
+      - TypeSynonymInstances
+      - UndecidableInstances
+      - UndecidableSuperClasses
+      - ViewPatterns
+    ghc-options:
+      - -Wall
+      - -Wincomplete-uni-patterns
+      - -Wincomplete-record-updates
+      - -Wcompat
+      - -Wnoncanonical-monad-instances
+      - -Wnoncanonical-monadfail-instances
     dependencies:
         - base >= 4.9.1 && < 5
         - random
@@ -48,7 +81,6 @@ library:
         - Data.OpenWitness.Exception
         - Data.OpenWitness.ST
         - Data.OpenWitness.Instance
-    ghc-options: -Wall
 
 tests:
     tests:

@@ -1,5 +1,6 @@
 module Data.OpenWitness.TypeRep where
 
+import Prelude
 import Data.Kind
 import Data.Maybe
 import Data.OpenWitness

@@ -3,6 +3,7 @@ module Data.OpenWitness.Instance where
 import Data.Constraint
 import Data.OpenWitness.TypeRep
 import Data.Type.Heterogeneous
+import Prelude
 
 data Instance =
     forall (t :: Constraint). t =>

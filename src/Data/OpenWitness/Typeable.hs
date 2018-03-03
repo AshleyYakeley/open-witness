@@ -5,6 +5,7 @@ import Data.Kind
 import Data.OpenWitness
 import Data.OpenWitness.TypeRep
 import Data.Witness
+import Prelude
 
 -- | types of kind @*@ with a representation
 class Typeable (a :: k) where

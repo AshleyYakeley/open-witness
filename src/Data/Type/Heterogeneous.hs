@@ -1,5 +1,6 @@
 module Data.Type.Heterogeneous where
 
+import Prelude
 import Data.Kind
 import Data.Type.Equality
 
