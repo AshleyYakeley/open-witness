@@ -6,8 +6,7 @@ import Data.Type.Heterogeneous
 import Prelude
 
 data Instance =
-    forall (t :: Constraint). t =>
-                              MkInstance (TypeRep t)
+    forall (t :: Constraint). t => MkInstance (TypeRep t)
 
 findInstance :: [Instance] -> TypeRep t -> Maybe (Dict t)
 findInstance [] _ = Nothing
