@@ -2,7 +2,6 @@ module Data.OpenWitness.TypeRep where
 
 import Prelude
 import Data.Kind
-import Data.Maybe
 import Data.OpenWitness
 import Data.Type.Heterogeneous
 import Data.Witness
@@ -21,6 +20,3 @@ instance TestHetEquality TypeRep where
 
 instance TestEquality TypeRep where
     testEquality wa wb = fmap homoHetEq $ testHetEquality wa wb
-
-instance Eq1 TypeRep where
-    equals1 r1 r2 = isJust (testHetEquality r1 r2)
