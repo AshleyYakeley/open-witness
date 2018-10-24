@@ -25,7 +25,7 @@ instance TestEquality Exn where
     testEquality (MkExn a) (MkExn b) = testEquality a b
 
 newtype ExnException =
-    MkExnException (Any Exn)
+    MkExnException (AnyValue Exn)
     deriving (Typeable)
 
 -- | Template Haskell function to declare 'Exn' exception keys.
@@ -38,13 +38,13 @@ instance Show ExnException where
 instance CE.Exception ExnException
 
 throw :: Exn e -> e -> a
-throw exn e = CE.throw (MkExnException (MkAny exn e))
+throw exn e = CE.throw (MkExnException (MkAnyValue exn e))
 
 catch :: IO a -> Exn e -> (e -> IO a) -> IO a
 catch foo exn catcher =
     CE.catch
         foo
         (\ex@(MkExnException cell) ->
-             case matchAny exn cell of
+             case matchAnyValue exn cell of
                  Just e -> catcher e
                  _ -> CE.throw ex)
