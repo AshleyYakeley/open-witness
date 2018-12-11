@@ -21,8 +21,7 @@ cache:
   - $HOME/.stack
 
 env:
-  - RESOLVER=lts-8
-  - RESOLVER=lts-9
+  - RESOLVER=lts-12
   - RESOLVER=nightly
 
 before_install:
