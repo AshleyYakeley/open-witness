@@ -1,7 +1,6 @@
 -- | This is an approximate re-implementation of "Data.Dynamic" using open witnesses.
 module Data.OpenWitness.Dynamic where
 
-import Data.Kind
 import Data.OpenWitness.TypeRep
 import Data.OpenWitness.Typeable
 import Data.Type.Heterogeneous

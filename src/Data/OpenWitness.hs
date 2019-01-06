@@ -19,7 +19,6 @@ import Control.Monad.Fix
 import Control.Monad.Trans.State
 import Data.Functor.Identity
 import Data.Hashable
-import Data.Kind
 import Data.List
 import Data.Traversable
 import Data.Type.Heterogeneous

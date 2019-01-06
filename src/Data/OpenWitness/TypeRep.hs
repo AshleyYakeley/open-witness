@@ -1,7 +1,6 @@
 module Data.OpenWitness.TypeRep where
 
 import Prelude
-import Data.Kind
 import Data.OpenWitness
 import Data.Type.Heterogeneous
 import Data.Witness

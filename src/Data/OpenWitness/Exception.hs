@@ -9,7 +9,6 @@ module Data.OpenWitness.Exception
     ) where
 
 import qualified Control.Exception as CE (Exception, catch, throw)
-import Data.Kind
 import Data.OpenWitness
 import Data.Typeable
 import Data.Witness
