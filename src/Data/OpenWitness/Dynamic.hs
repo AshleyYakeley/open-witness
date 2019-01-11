@@ -1,6 +1,7 @@
 -- | This is an approximate re-implementation of "Data.Dynamic" using open witnesses.
 module Data.OpenWitness.Dynamic where
 
+import Data.Kind
 import Data.OpenWitness.TypeRep
 import Data.OpenWitness.Typeable
 import Data.Type.Heterogeneous
@@ -12,7 +13,7 @@ type Dynamic = AnyValue TypeRep
 
 -- * Converting to and from @Dynamic@
 toDyn ::
-       forall (a :: *). Typeable a
+       forall (a :: Type). Typeable a
     => a
     -> Dynamic
 toDyn = MkAnyValue typeRep
@@ -24,7 +25,7 @@ fromDyn dyn def =
         _ -> def
 
 fromDynamic ::
-       forall (a :: *). Typeable a
+       forall (a :: Type). Typeable a
     => Dynamic
     -> Maybe a
 fromDynamic (MkAnyValue uq a) = do
@@ -45,5 +46,5 @@ dynApp a b =
         Just d -> d
         _ -> error "Type error in dynamic application.\nCan't apply function to argument"
 
-dynTypeRep :: Dynamic -> AnyW (TypeRep :: * -> *)
+dynTypeRep :: Dynamic -> AnyW (TypeRep :: Type -> Type)
 dynTypeRep (MkAnyValue r _) = MkAnyW r

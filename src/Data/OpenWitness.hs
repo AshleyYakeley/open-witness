@@ -23,18 +23,20 @@ import Data.List
 import Data.Traversable
 import Data.Type.Heterogeneous
 import Data.Witness
-import Language.Haskell.TH
+import Language.Haskell.TH hiding (Type)
+import qualified Language.Haskell.TH
 import Prelude
 import System.IO.Unsafe (unsafePerformIO)
 import System.Random
 import Unsafe.Coerce
+import Data.Kind
 
 unsafeSameType :: HetEq a b
 unsafeSameType = unsafeCoerce ReflH
 
 -- | A witness type that can witness to any type.
 -- But values cannot be constructed; they can only be generated in 'IO' and certain other monads.
-newtype OpenWitness :: * -> forall (k :: *). k -> * where
+newtype OpenWitness :: Type -> forall (k :: Type). k -> Type where
     MkOpenWitness :: Integer -> OpenWitness s a
 
 instance Eq (OpenWitness s a) where

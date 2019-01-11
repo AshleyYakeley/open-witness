@@ -7,7 +7,7 @@ import Data.OpenWitness.TypeRep
 import Data.Witness
 import Prelude
 
--- | types of kind @*@ with a representation
+-- | types of kind @Type@ with a representation
 class Typeable (a :: k) where
     typeRep :: TypeRep a
 
@@ -56,7 +56,7 @@ instance Typeable Int where
     typeRep = SimpleTypeRep $(iowitness [t|Int|])
 
 cast ::
-       forall (a :: *) (b :: *). (Typeable a, Typeable b)
+       forall (a :: Type) (b :: Type). (Typeable a, Typeable b)
     => a
     -> Maybe b
 cast a = do
@@ -64,7 +64,7 @@ cast a = do
     return a
 
 gcast ::
-       forall (k :: *) (a :: k) (b :: k) (c :: k -> *). (Typeable a, Typeable b)
+       forall (k :: Type) (a :: k) (b :: k) (c :: k -> Type). (Typeable a, Typeable b)
     => c a
     -> Maybe (c b)
 gcast ca = do
@@ -83,5 +83,5 @@ funResultTy (ApplyTypeRep (ApplyTypeRep repFn' ta') tb') ta = do
     return tb'
 funResultTy _ _ = Nothing
 
-mkAppTy :: forall (k1 :: *) (k2 :: *) (f :: k1 -> k2) (a :: k1). TypeRep f -> TypeRep a -> TypeRep (f a)
+mkAppTy :: forall (k1 :: Type) (k2 :: Type) (f :: k1 -> k2) (a :: k1). TypeRep f -> TypeRep a -> TypeRep (f a)
 mkAppTy = ApplyTypeRep

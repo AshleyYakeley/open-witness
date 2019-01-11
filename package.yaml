@@ -32,14 +32,15 @@ library:
       - GADTs
       - GeneralizedNewtypeDeriving
       - ImplicitParams
+      - NoImplicitPrelude
       - InstanceSigs
       - KindSignatures
       - LambdaCase
       - MonadFailDesugaring
       - MultiParamTypeClasses
-      - NoImplicitPrelude
       - OverloadedLabels
       - OverloadedStrings
+      - PartialTypeSignatures
       - PatternGuards
       - PatternSynonyms
       - PolyKinds
@@ -48,9 +49,11 @@ library:
       - RecursiveDo
       - ScopedTypeVariables
       - StandaloneDeriving
+      - NoStarIsType
       - TemplateHaskell
       - TypeApplications
       - TypeFamilies
+      - TypeFamilyDependencies
       - TypeInType
       - TypeOperators
       - TypeSynonymInstances
