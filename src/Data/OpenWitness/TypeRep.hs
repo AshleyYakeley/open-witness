@@ -1,10 +1,10 @@
 module Data.OpenWitness.TypeRep where
 
-import Prelude
+import Data.Kind
 import Data.OpenWitness
 import Data.Type.Heterogeneous
 import Data.Witness
-import Data.Kind
+import Prelude
 
 data TypeRep :: forall (k :: Type). k -> Type where
     SimpleTypeRep :: forall (k :: Type) (a :: k). IOWitness a -> TypeRep a

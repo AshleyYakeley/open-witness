@@ -12,13 +12,12 @@ module Data.OpenWitness
     , iowitness
     ) where
 
---    unsafeIOWitnessFromInteger,
---    unsafeIOWitnessFromString,
 import Control.Concurrent.MVar
 import Control.Monad.Fix
 import Control.Monad.Trans.State
 import Data.Functor.Identity
 import Data.Hashable
+import Data.Kind
 import Data.List
 import Data.Traversable
 import Data.Type.Heterogeneous
@@ -29,7 +28,6 @@ import Prelude
 import System.IO.Unsafe (unsafePerformIO)
 import System.Random
 import Unsafe.Coerce
-import Data.Kind
 
 unsafeSameType :: HetEq a b
 unsafeSameType = unsafeCoerce ReflH

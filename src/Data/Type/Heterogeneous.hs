@@ -1,8 +1,8 @@
 module Data.Type.Heterogeneous where
 
-import Prelude
-import Data.Type.Equality
 import Data.Kind
+import Data.Type.Equality
+import Prelude
 
 data HetEq (a :: ka) (b :: kb) where
     ReflH :: forall (k :: Type) (t :: k). HetEq t t
