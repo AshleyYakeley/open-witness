@@ -84,6 +84,7 @@ library:
         - Data.OpenWitness.Exception
         - Data.OpenWitness.ST
         - Data.OpenWitness.Instance
+        - Data.OpenWitness.Witnessed
 
 tests:
     tests:
