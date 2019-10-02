@@ -19,6 +19,7 @@ import Data.Functor.Identity
 import Data.Hashable
 import Data.Kind
 import Data.List
+import Data.OpenWitness.Order
 import Data.Traversable
 import Data.Type.Heterogeneous
 import Data.Witness
@@ -29,8 +30,11 @@ import System.IO.Unsafe (unsafePerformIO)
 import System.Random
 import Unsafe.Coerce
 
-unsafeSameType :: HetEq a b
+unsafeSameType :: forall ka kb (a :: ka) (b :: kb). HetEq a b
 unsafeSameType = unsafeCoerce ReflH
+
+unsafeWEQ :: forall k (a :: k) (b :: k). WOrder a b
+unsafeWEQ = unsafeCoerce WEQ
 
 -- | A witness type that can witness to any type.
 -- But values cannot be constructed; they can only be generated in 'IO' and certain other monads.
@@ -48,6 +52,13 @@ instance TestHetEquality (OpenWitness s) where
 
 instance TestEquality (OpenWitness s) where
     testEquality wa wb = fmap homoHetEq $ testHetEquality wa wb
+
+instance TestOrder (OpenWitness s) where
+    testOrder (MkOpenWitness ua) (MkOpenWitness ub) =
+        case compare ua ub of
+            LT -> WLT
+            EQ -> unsafeWEQ
+            GT -> WGT
 
 -- | The @s@ type for running 'OW' in 'IO'.
 data RealWorld
