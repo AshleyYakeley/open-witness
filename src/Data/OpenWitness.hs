@@ -10,6 +10,7 @@ module Data.OpenWitness
     , runOW
     , owToIO
     , iowitness
+    , hashOpenWitness
     ) where
 
 import Control.Concurrent.MVar
@@ -141,3 +142,6 @@ iowitness qt = do
     freevarsType (AppT t1 t2) = union (freevarsType t1) (freevarsType t2)
     freevarsType (SigT t _) = freevarsType t
     freevarsType _ = []
+
+hashOpenWitness :: Hashable t => OpenWitness s a -> t -> OpenWitness s a
+hashOpenWitness (MkOpenWitness i) t = MkOpenWitness $ fromIntegral $ hash (i, t)
