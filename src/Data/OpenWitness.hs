@@ -40,7 +40,10 @@ unsafeWEQ = unsafeCoerce WEQ
 -- | A witness type that can witness to any type.
 -- But values cannot be constructed; they can only be generated in 'IO' and certain other monads.
 newtype OpenWitness :: Type -> forall (k :: Type). k -> Type where
-    MkOpenWitness :: Integer -> OpenWitness s a
+    MkOpenWitness :: forall (k :: Type) (s :: Type) (a :: k). Integer -> OpenWitness s a
+
+-- type role OpenWitness _ nominal nominal -- doesn't compile
+type role OpenWitness _ nominal _
 
 instance Eq (OpenWitness s a) where
     (MkOpenWitness p) == (MkOpenWitness q) = p == q
