@@ -15,7 +15,6 @@ import Data.Typeable
 import Data.Witness
 import Language.Haskell.TH hiding (Type)
 import Prelude
-import Prelude (IO, Show(..))
 
 -- | A key to match exceptions. The type variable is the data the exception carries.
 newtype Exn (e :: Type) =

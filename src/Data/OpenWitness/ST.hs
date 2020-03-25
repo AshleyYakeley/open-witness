@@ -49,7 +49,7 @@ readSTRef key = do
     dict <- get
     case witnessDictLookup key dict of
         Just a -> return a
-        _ -> fail "ref not found"
+        _ -> error "ref not found"
 
 writeSTRef :: forall s a. STRef s a -> a -> ST s ()
 writeSTRef key newa = modify (witnessDictReplace key newa)

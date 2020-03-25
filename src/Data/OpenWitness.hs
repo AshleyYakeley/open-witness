@@ -42,8 +42,8 @@ unsafeWEQ = unsafeCoerce WEQ
 newtype OpenWitness :: Type -> forall (k :: Type). k -> Type where
     MkOpenWitness :: forall (k :: Type) (s :: Type) (a :: k). Integer -> OpenWitness s a
 
--- type role OpenWitness _ nominal nominal -- doesn't compile
-type role OpenWitness _ nominal _
+-- type role OpenWitness nominal nominal -- doesn't compile
+type role OpenWitness nominal _
 
 instance Eq (OpenWitness s a) where
     (MkOpenWitness p) == (MkOpenWitness q) = p == q
