@@ -2,6 +2,7 @@ module Data.OpenWitness.Instance where
 
 import Data.Constraint
 import Data.OpenWitness.TypeRep
+import Data.Type.Equality
 import Data.Type.Heterogeneous
 import Prelude
 
@@ -12,5 +13,5 @@ findInstance :: [Instance] -> TypeRep t -> Maybe (Dict t)
 findInstance [] _ = Nothing
 findInstance (MkInstance ti:ii) t =
     case testHetEquality ti t of
-        Just ReflH -> Just Dict
+        Just HRefl -> Just Dict
         Nothing -> findInstance ii t

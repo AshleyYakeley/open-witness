@@ -13,9 +13,9 @@ data TypeRep :: forall (k :: Type). k -> Type where
 instance TestHetEquality TypeRep where
     testHetEquality (SimpleTypeRep wa) (SimpleTypeRep wb) = testHetEquality wa wb
     testHetEquality (ApplyTypeRep tfa ta) (ApplyTypeRep tfb tb) = do
-        ReflH <- testHetEquality tfa tfb
-        ReflH <- testHetEquality ta tb
-        return ReflH
+        HRefl <- testHetEquality tfa tfb
+        HRefl <- testHetEquality ta tb
+        return HRefl
     testHetEquality _ _ = Nothing
 
 instance TestEquality TypeRep where

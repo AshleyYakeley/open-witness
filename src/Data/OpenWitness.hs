@@ -31,8 +31,8 @@ import System.IO.Unsafe (unsafePerformIO)
 import System.Random
 import Unsafe.Coerce
 
-unsafeSameType :: forall ka kb (a :: ka) (b :: kb). HetEq a b
-unsafeSameType = unsafeCoerce ReflH
+unsafeSameType :: forall ka kb (a :: ka) (b :: kb). a :~~: b
+unsafeSameType = unsafeCoerce HRefl
 
 unsafeWEQ :: forall k (a :: k) (b :: k). WOrder a b
 unsafeWEQ = unsafeCoerce WEQ

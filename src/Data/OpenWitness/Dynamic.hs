@@ -35,8 +35,8 @@ fromDynamic (MkAnyValue uq a) = do
 -- * Applying functions of dynamic type
 dynApply :: Dynamic -> Dynamic -> Maybe Dynamic
 dynApply (MkAnyValue (ApplyTypeRep (ApplyTypeRep repFn' rx') ry) f) (MkAnyValue rx x) = do
-    ReflH <- testHetEquality repFn' (typeRep :: TypeRep (->))
-    ReflH <- testHetEquality rx' rx
+    HRefl <- testHetEquality repFn' (typeRep :: TypeRep (->))
+    HRefl <- testHetEquality rx' rx
     return (MkAnyValue ry (f x))
 dynApply _ _ = Nothing
 
