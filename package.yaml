@@ -75,7 +75,6 @@ library:
         - constraints
         - witness >= 0.4
     exposed-modules:
-        - Data.Type.Heterogeneous
         - Data.OpenWitness.Order
         - Data.OpenWitness
         - Data.OpenWitness.TypeRep
