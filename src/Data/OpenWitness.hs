@@ -19,7 +19,7 @@ import Control.Monad.Trans.State
 import Data.Functor.Identity
 import Data.Hashable
 import Data.Kind
-import Data.List
+import Data.List ((\\), union)
 import Data.OpenWitness.Order
 import Data.Traversable
 import Data.Type.Heterogeneous
