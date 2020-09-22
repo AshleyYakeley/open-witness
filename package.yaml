@@ -1,5 +1,5 @@
 name: open-witness
-version: "0.4.0.1"
+version: "0.5"
 author: Ashley Yakeley
 copyright: (c) 2017-2019 Ashley Yakeley
 license: BSD3
@@ -73,7 +73,7 @@ library:
         - transformers
         - hashable
         - constraints
-        - witness >= 0.4
+        - witness >= 0.5
     exposed-modules:
         - Data.OpenWitness.Order
         - Data.OpenWitness
