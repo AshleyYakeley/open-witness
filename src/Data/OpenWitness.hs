@@ -78,7 +78,7 @@ ioWitnessSource = unsafePerformIO (newMVar 0)
 newIOWitness :: forall a. IO (IOWitness a)
 newIOWitness = do
     val <- takeMVar ioWitnessSource
-    putMVar ioWitnessSource (val + 1)
+    putMVar ioWitnessSource (succ val)
     return (MkOpenWitness val)
 
 type OWState = Integer
@@ -95,7 +95,7 @@ runOW uw = (\(MkOW st) -> evalState st 0) uw
 
 -- | Generate a new 'OpenWitness' in 'OW'.
 newOpenWitnessOW :: forall s a. OW s (OpenWitness s a)
-newOpenWitnessOW = MkOW (StateT (\val -> Identity (MkOpenWitness val, val + 1)))
+newOpenWitnessOW = MkOW (StateT (\val -> Identity (MkOpenWitness val, succ val)))
 
 -- | Run an 'OW' computation in 'IO'.
 owToIO :: OW RealWorld a -> IO a
