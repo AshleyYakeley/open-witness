@@ -135,9 +135,9 @@ iowitness qt = do
     unionList :: (Eq a) => [[a]] -> [a]
     unionList [] = []
     unionList (l:ls) = union l (unionList ls)
-    bindingvarTVB :: TyVarBndr -> Name
-    bindingvarTVB (PlainTV n) = n
-    bindingvarTVB (KindedTV n _) = n
+    bindingvarTVB :: TyVarBndr Specificity -> Name
+    bindingvarTVB (PlainTV n _) = n
+    bindingvarTVB (KindedTV n _ _) = n
     freevarsType :: Language.Haskell.TH.Type -> [Name]
     freevarsType (ForallT tvbs ps t) =
         (union (freevarsType t) (unionList (fmap freevarsType ps))) \\ (fmap bindingvarTVB tvbs)
