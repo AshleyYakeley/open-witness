@@ -18,6 +18,7 @@ import Control.Monad.Fix
 import Control.Monad.Trans.State
 import Data.Functor.Identity
 import Data.Hashable
+import Data.Int
 import Data.Kind
 import Data.List ((\\), union)
 import Data.OpenWitness.Order
@@ -40,7 +41,7 @@ unsafeWEQ = unsafeCoerce WEQ
 -- | A witness type that can witness to any type.
 -- But values cannot be constructed; they can only be generated in 'IO' and certain other monads.
 newtype OpenWitness :: Type -> forall (k :: Type). k -> Type where
-    MkOpenWitness :: forall (k :: Type) (s :: Type) (a :: k). Integer -> OpenWitness s a
+    MkOpenWitness :: forall (k :: Type) (s :: Type) (a :: k). Int64 -> OpenWitness s a
 
 -- type role OpenWitness nominal nominal -- doesn't compile
 type role OpenWitness nominal _
@@ -70,7 +71,7 @@ data RealWorld
 -- | An 'OpenWitness' for 'IO'.
 type IOWitness = OpenWitness RealWorld
 
-ioWitnessSource :: MVar Integer
+ioWitnessSource :: MVar Int64
 {-# NOINLINE ioWitnessSource #-}
 ioWitnessSource = unsafePerformIO (newMVar 0)
 
@@ -81,7 +82,7 @@ newIOWitness = do
     putMVar ioWitnessSource (succ val)
     return (MkOpenWitness val)
 
-type OWState = Integer
+type OWState = Int64
 
 -- | A runnable monad in which 'OpenWitness' values can be generated.
 -- The @s@ parameter plays the same role as it does in 'ST', preventing 'OpenWitness' values from one run being used in another.
@@ -108,13 +109,13 @@ owToIO (MkOW st) =
 
 -- | An unsafe hack to generate 'IOWitness' values.
 -- This is safe if you use a different integer each time, and if @a@ is a single type.
-unsafeIOWitnessFromInteger :: Integer -> IOWitness a
-unsafeIOWitnessFromInteger = MkOpenWitness
+unsafeIOWitnessFromInt64 :: Int64 -> IOWitness a
+unsafeIOWitnessFromInt64 = MkOpenWitness
 
 -- | An unsafe hack to generate 'IOWitness' values.
 -- This is safe if you use a different string each time (and 'hashString' doesn't collide), and if @a@ is a single type.
 unsafeIOWitnessFromString :: String -> IOWitness a
-unsafeIOWitnessFromString = unsafeIOWitnessFromInteger . fromIntegral . hash
+unsafeIOWitnessFromString = unsafeIOWitnessFromInt64 . fromIntegral . hash
 
 -- | Template Haskell function to declare 'IOWitness' values.
 iowitness :: TypeQ -> Q Exp
@@ -122,7 +123,7 @@ iowitness qt = do
     t <- qt
     _ <- forM (freevarsType t) (\v -> reportError ("Type variable " ++ (show v) ++ " free in iowitness type"))
     l <- location
-    rnd :: Integer <- runIO randomIO
+    rnd :: Int64 <- runIO randomIO
     key <- return ((showLoc l) ++ "/" ++ (show rnd))
     keyExpr <- return (LitE (StringL key))
     untypedWitExpr <- [|unsafeIOWitnessFromString $(return keyExpr)|]
