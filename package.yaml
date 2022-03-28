@@ -69,7 +69,7 @@ library:
     dependencies:
         - base >= 4.14 && < 5
         - random
-        - template-haskell
+        - template-haskell >= 2.18
         - transformers
         - hashable
         - constraints
