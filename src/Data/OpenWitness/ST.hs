@@ -21,7 +21,7 @@ import Control.Monad.Fix
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.State
 import Data.OpenWitness
-import Data.Witness.WitnessDict
+import Data.Witness.Specific.WitnessDict
 import Prelude
 
 type ST s = StateT (WitnessDict (OpenWitness s)) (OW s)

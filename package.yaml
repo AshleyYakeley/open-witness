@@ -1,5 +1,5 @@
 name: open-witness
-version: "0.5"
+version: "0.6"
 author: Ashley Yakeley
 copyright: (c) 2017-2021 Ashley Yakeley
 license: BSD-2-Clause
@@ -67,13 +67,13 @@ library:
       - -Wcompat
       - -Wnoncanonical-monad-instances
     dependencies:
-        - base >= 4.14 && < 5
+        - base >= 4.15 && < 5
         - random
-        - template-haskell >= 2.18
+        - template-haskell
         - transformers
         - hashable
         - constraints
-        - witness >= 0.5
+        - witness >= 0.6
     exposed-modules:
         - Data.OpenWitness.Order
         - Data.OpenWitness
@@ -98,7 +98,7 @@ tests:
             - MultiParamTypeClasses
             - TemplateHaskell
         dependencies:
-            - base >= 4.12
+            - base >= 4.15 && < 5
             - mtl
             - witness
             - open-witness
