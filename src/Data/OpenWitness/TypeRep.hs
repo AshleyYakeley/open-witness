@@ -19,4 +19,4 @@ instance TestHetEquality TypeRep where
     testHetEquality _ _ = Nothing
 
 instance TestEquality TypeRep where
-    testEquality wa wb = fmap homoHetEq $ testHetEquality wa wb
+    testEquality wa wb = fmap hetHomoEq $ testHetEquality wa wb

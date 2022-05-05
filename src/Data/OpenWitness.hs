@@ -56,7 +56,7 @@ instance TestHetEquality (OpenWitness s) where
             else Nothing
 
 instance TestEquality (OpenWitness s) where
-    testEquality wa wb = fmap homoHetEq $ testHetEquality wa wb
+    testEquality wa wb = fmap hetHomoEq $ testHetEquality wa wb
 
 instance TestOrder (OpenWitness s) where
     testOrder (MkOpenWitness ua) (MkOpenWitness ub) =
