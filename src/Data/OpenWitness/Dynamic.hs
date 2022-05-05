@@ -9,14 +9,14 @@ import Data.Witness
 import Prelude
 
 -- * The @Dynamic@ type
-type Dynamic = AnyValue TypeRep
+type Dynamic = SomeOf TypeRep
 
 -- * Converting to and from @Dynamic@
 toDyn ::
        forall (a :: Type). Typeable a
     => a
     -> Dynamic
-toDyn = MkAnyValue typeRep
+toDyn = MkSomeOf typeRep
 
 fromDyn :: Typeable a => Dynamic -> a -> a
 fromDyn dyn def =
@@ -28,16 +28,16 @@ fromDynamic ::
        forall (a :: Type). Typeable a
     => Dynamic
     -> Maybe a
-fromDynamic (MkAnyValue uq a) = do
+fromDynamic (MkSomeOf uq a) = do
     Refl <- testEquality uq (typeRep :: TypeRep a)
     return a
 
 -- * Applying functions of dynamic type
 dynApply :: Dynamic -> Dynamic -> Maybe Dynamic
-dynApply (MkAnyValue (ApplyTypeRep (ApplyTypeRep repFn' rx') ry) f) (MkAnyValue rx x) = do
+dynApply (MkSomeOf (ApplyTypeRep (ApplyTypeRep repFn' rx') ry) f) (MkSomeOf rx x) = do
     HRefl <- testHetEquality repFn' (typeRep :: TypeRep (->))
     HRefl <- testHetEquality rx' rx
-    return (MkAnyValue ry (f x))
+    return (MkSomeOf ry (f x))
 dynApply _ _ = Nothing
 
 dynApp :: Dynamic -> Dynamic -> Dynamic
@@ -46,5 +46,5 @@ dynApp a b =
         Just d -> d
         _ -> error "Type error in dynamic application.\nCan't apply function to argument"
 
-dynTypeRep :: Dynamic -> AnyW (TypeRep :: Type -> Type)
-dynTypeRep (MkAnyValue r _) = MkAnyW r
+dynTypeRep :: Dynamic -> Some (TypeRep :: Type -> Type)
+dynTypeRep (MkSomeOf r _) = MkSome r
