@@ -4,8 +4,7 @@ module Data.OpenWitness.Dynamic where
 import Data.Kind
 import Data.OpenWitness.TypeRep
 import Data.OpenWitness.Typeable
-import Data.Type.Heterogeneous
-import Data.Witness
+import Data.Type.Witness
 import Prelude
 
 -- * The @Dynamic@ type

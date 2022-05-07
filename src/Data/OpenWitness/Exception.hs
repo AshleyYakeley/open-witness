@@ -11,8 +11,8 @@ module Data.OpenWitness.Exception
 import qualified Control.Exception as CE (Exception, catch, throw)
 import Data.Kind
 import Data.OpenWitness
+import Data.Type.Witness
 import Data.Typeable
-import Data.Witness
 import Language.Haskell.TH hiding (Type)
 import Prelude
 

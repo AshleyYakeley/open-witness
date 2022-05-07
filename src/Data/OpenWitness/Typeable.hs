@@ -4,7 +4,7 @@ module Data.OpenWitness.Typeable where
 import Data.Kind
 import Data.OpenWitness
 import Data.OpenWitness.TypeRep
-import Data.Witness
+import Data.Type.Witness
 import Prelude
 
 -- | types of kind @Type@ with a representation

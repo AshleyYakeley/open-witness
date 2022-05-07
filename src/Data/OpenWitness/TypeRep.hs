@@ -2,8 +2,7 @@ module Data.OpenWitness.TypeRep where
 
 import Data.Kind
 import Data.OpenWitness
-import Data.Type.Heterogeneous
-import Data.Witness
+import Data.Type.Witness
 import Prelude
 
 data TypeRep :: forall (k :: Type). k -> Type where

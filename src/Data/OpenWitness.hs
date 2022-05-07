@@ -23,8 +23,7 @@ import Data.Kind
 import Data.List ((\\), union)
 import Data.OpenWitness.Order
 import Data.Traversable
-import Data.Type.Heterogeneous
-import Data.Witness
+import Data.Type.Witness
 import Language.Haskell.TH hiding (Type)
 import qualified Language.Haskell.TH
 import Prelude

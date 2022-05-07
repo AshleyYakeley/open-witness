@@ -1,7 +1,7 @@
 module Data.OpenWitness.Order where
 
 import Data.Kind
-import Data.Witness
+import Data.Type.Witness
 
 data WOrder (a :: k) (b :: k) where
     WLT :: forall k (a :: k) (b :: k). WOrder a b

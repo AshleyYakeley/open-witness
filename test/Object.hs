@@ -1,7 +1,7 @@
 module Object where
 
 import Data.OpenWitness
-import Data.Witness
+import Data.Type.Witness
 
 data Object s =
     forall a. MkObject (OpenWitness s a)

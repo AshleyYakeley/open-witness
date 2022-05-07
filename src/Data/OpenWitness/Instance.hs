@@ -3,7 +3,7 @@ module Data.OpenWitness.Instance where
 import Data.Constraint
 import Data.OpenWitness.TypeRep
 import Data.Type.Equality
-import Data.Type.Heterogeneous
+import Data.Type.Witness
 import Prelude
 
 data Instance =
