@@ -1,6 +1,6 @@
 module Object where
 
-import Data.OpenWitness
+import Data.Type.OpenWitness
 import Data.Type.Witness
 
 data Object s =

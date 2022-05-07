@@ -1,7 +1,7 @@
-module Data.OpenWitness.TypeRep where
+module Data.Type.OpenWitness.TypeRep where
 
 import Data.Kind
-import Data.OpenWitness
+import Data.Type.OpenWitness
 import Data.Type.Witness
 import Prelude
 

@@ -1,8 +1,8 @@
-module Data.OpenWitness.Instance where
+module Data.Type.OpenWitness.Instance where
 
 import Data.Constraint
-import Data.OpenWitness.TypeRep
 import Data.Type.Equality
+import Data.Type.OpenWitness.TypeRep
 import Data.Type.Witness
 import Prelude
 

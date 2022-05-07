@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# OPTIONS -fno-warn-unused-matches #-}
 
-module Data.OpenWitness.Exception
+module Data.Type.OpenWitness.Exception
     ( Exn
     , declexn
     , throw
@@ -10,7 +10,7 @@ module Data.OpenWitness.Exception
 
 import qualified Control.Exception as CE (Exception, catch, throw)
 import Data.Kind
-import Data.OpenWitness
+import Data.Type.OpenWitness
 import Data.Type.Witness
 import Data.Typeable
 import Language.Haskell.TH hiding (Type)

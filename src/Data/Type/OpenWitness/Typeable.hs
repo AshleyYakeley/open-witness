@@ -1,9 +1,9 @@
 -- | This is an approximate re-implementation of "Data.Typeable" using open witnesses.
-module Data.OpenWitness.Typeable where
+module Data.Type.OpenWitness.Typeable where
 
 import Data.Kind
-import Data.OpenWitness
-import Data.OpenWitness.TypeRep
+import Data.Type.OpenWitness
+import Data.Type.OpenWitness.TypeRep
 import Data.Type.Witness
 import Prelude
 

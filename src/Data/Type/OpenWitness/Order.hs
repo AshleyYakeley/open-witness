@@ -1,4 +1,4 @@
-module Data.OpenWitness.Order where
+module Data.Type.OpenWitness.Order where
 
 import Data.Kind
 import Data.Type.Witness

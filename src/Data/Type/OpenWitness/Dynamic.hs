@@ -1,9 +1,9 @@
 -- | This is an approximate re-implementation of "Data.Dynamic" using open witnesses.
-module Data.OpenWitness.Dynamic where
+module Data.Type.OpenWitness.Dynamic where
 
 import Data.Kind
-import Data.OpenWitness.TypeRep
-import Data.OpenWitness.Typeable
+import Data.Type.OpenWitness.TypeRep
+import Data.Type.OpenWitness.Typeable
 import Data.Type.Witness
 import Prelude
 

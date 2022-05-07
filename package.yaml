@@ -75,15 +75,15 @@ library:
         - constraints
         - witness >= 0.6
     exposed-modules:
-        - Data.OpenWitness.Order
-        - Data.OpenWitness
-        - Data.OpenWitness.TypeRep
-        - Data.OpenWitness.Typeable
-        - Data.OpenWitness.Dynamic
-        - Data.OpenWitness.Exception
-        - Data.OpenWitness.ST
-        - Data.OpenWitness.Instance
-        - Data.OpenWitness.Witnessed
+        - Data.Type.OpenWitness.Order
+        - Data.Type.OpenWitness
+        - Data.Type.OpenWitness.TypeRep
+        - Data.Type.OpenWitness.Typeable
+        - Data.Type.OpenWitness.Dynamic
+        - Data.Type.OpenWitness.Exception
+        - Data.Type.OpenWitness.ST
+        - Data.Type.OpenWitness.Instance
+        - Data.Type.OpenWitness.Witnessed
 
 tests:
     tests:

@@ -1,4 +1,4 @@
-module Data.OpenWitness.Witnessed
+module Data.Type.OpenWitness.Witnessed
     ( Witnessed
     , unWitnessed
     , newWitnessed
@@ -7,8 +7,8 @@ module Data.OpenWitness.Witnessed
     ) where
 
 import Data.IORef
-import Data.OpenWitness
 import Data.Type.Equality
+import Data.Type.OpenWitness
 import Prelude
 
 data Witnessed f a =

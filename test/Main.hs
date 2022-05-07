@@ -2,8 +2,8 @@
 
 module Main where
 
-import Data.OpenWitness.Exception
-import Data.OpenWitness.ST
+import Data.Type.OpenWitness.Exception
+import Data.Type.OpenWitness.ST
 import Prelude
 import Test.Tasty
 import Test.Tasty.HUnit

@@ -1,6 +1,6 @@
 {-# OPTIONS -fno-warn-name-shadowing #-}
 
-module Data.OpenWitness
+module Data.Type.OpenWitness
     ( OpenWitness
     , RealWorld
     , IOWitness
@@ -21,8 +21,8 @@ import Data.Hashable
 import Data.Int
 import Data.Kind
 import Data.List ((\\), union)
-import Data.OpenWitness.Order
 import Data.Traversable
+import Data.Type.OpenWitness.Order
 import Data.Type.Witness
 import Language.Haskell.TH hiding (Type)
 import qualified Language.Haskell.TH

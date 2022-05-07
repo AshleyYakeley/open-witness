@@ -1,5 +1,5 @@
 -- | This is an approximate re-implementation of "Control.Monad.ST" and "Data.STRef" using open witnesses.
-module Data.OpenWitness.ST
+module Data.Type.OpenWitness.ST
     (
     -- * The @ST@ Monad
       ST
@@ -20,7 +20,7 @@ module Data.OpenWitness.ST
 import Control.Monad.Fix
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.State
-import Data.OpenWitness
+import Data.Type.OpenWitness
 import Data.Type.Witness.Specific.WitnessOfMap
 import Prelude
 
