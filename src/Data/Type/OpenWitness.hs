@@ -22,7 +22,6 @@ import Data.Int
 import Data.Kind
 import Data.List ((\\), union)
 import Data.Traversable
-import Data.Type.OpenWitness.Order
 import Data.Type.Witness
 import Language.Haskell.TH hiding (Type)
 import qualified Language.Haskell.TH

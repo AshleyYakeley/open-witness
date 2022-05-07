@@ -75,7 +75,6 @@ library:
         - constraints
         - witness >= 0.6
     exposed-modules:
-        - Data.Type.OpenWitness.Order
         - Data.Type.OpenWitness
         - Data.Type.OpenWitness.TypeRep
         - Data.Type.OpenWitness.Typeable
