@@ -33,7 +33,7 @@ import Unsafe.Coerce
 unsafeSameType :: forall ka kb (a :: ka) (b :: kb). a :~~: b
 unsafeSameType = unsafeCoerce HRefl
 
-unsafeWEQ :: forall k (a :: k) (b :: k). WOrder a b
+unsafeWEQ :: forall k (a :: k) (b :: k). WOrdering a b
 unsafeWEQ = unsafeCoerce WEQ
 
 -- | A witness type that can witness to any type.
@@ -57,7 +57,7 @@ instance TestEquality (OpenWitness s) where
     testEquality wa wb = fmap hetHomoEq $ testHetEquality wa wb
 
 instance TestOrder (OpenWitness s) where
-    testOrder (MkOpenWitness ua) (MkOpenWitness ub) =
+    testCompare (MkOpenWitness ua) (MkOpenWitness ub) =
         case compare ua ub of
             LT -> WLT
             EQ -> unsafeWEQ
