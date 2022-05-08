@@ -7,24 +7,19 @@ module Data.Type.OpenWitness.Witnessed
     ) where
 
 import Data.IORef
-import Data.Type.Equality
 import Data.Type.OpenWitness
+import Data.Type.Witness
 import Prelude
 
-data Witnessed f a =
-    MkWitnessed (IOWitness a)
-                (f a)
+type Witnessed = PairType IOWitness
 
 unWitnessed :: Witnessed f a -> f a
-unWitnessed (MkWitnessed _ fa) = fa
-
-instance TestEquality (Witnessed f) where
-    testEquality (MkWitnessed wa _) (MkWitnessed wb _) = testEquality wa wb
+unWitnessed (MkPairType _ fa) = fa
 
 newWitnessed :: f a -> IO (Witnessed f a)
 newWitnessed fa = do
     wit <- newIOWitness
-    return $ MkWitnessed wit fa
+    return $ MkPairType wit fa
 
 type WitnessedIORef = Witnessed IORef
 
