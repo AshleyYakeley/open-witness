@@ -1,3 +1,7 @@
 resolver: lts-19.5
 ghc-options:
     "$locals": -Werror
+
+extra-deps:
+- countable-1.2
+- witness-0.6
