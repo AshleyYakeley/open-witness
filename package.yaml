@@ -1,7 +1,7 @@
 name: open-witness
 version: "0.6"
 author: Ashley Yakeley
-copyright: (c) 2017-2021 Ashley Yakeley
+copyright: (c) 2017-2022 Ashley Yakeley
 license: BSD-2-Clause
 license-file: LICENSE
 maintainer: <ashley@semantic.org>
@@ -13,6 +13,9 @@ description:
     See the 2008 draft paper /Witnesses and Open Witnesses/ (<https://semantic.org/wp-content/uploads/Open-Witnesses.pdf>).
 category: Data
 build-type: Simple
+
+extra-source-files:
+  - changelog.md
 
 library:
     source-dirs: src
@@ -67,42 +70,43 @@ library:
       - -Wcompat
       - -Wnoncanonical-monad-instances
     dependencies:
-        - base >= 4.15 && < 5
-        - random
-        - template-haskell
-        - transformers
-        - hashable
-        - constraints
-        - witness >= 0.6
+      - base >= 4.15 && < 5
+      - random >= 1.2
+      - template-haskell >= 2.17
+      - transformers >= 0.5
+      - hashable >= 1.3
+      - constraints >= 0.13
+      - witness >= 0.6
     exposed-modules:
-        - Data.Type.OpenWitness
-        - Data.Type.OpenWitness.TypeRep
-        - Data.Type.OpenWitness.Typeable
-        - Data.Type.OpenWitness.Dynamic
-        - Data.Type.OpenWitness.Exception
-        - Data.Type.OpenWitness.ST
-        - Data.Type.OpenWitness.Instance
-        - Data.Type.OpenWitness.Witnessed
+      - Data.Type.OpenWitness
+      - Data.Type.OpenWitness.TypeRep
+      - Data.Type.OpenWitness.Typeable
+      - Data.Type.OpenWitness.Dynamic
+      - Data.Type.OpenWitness.Exception
+      - Data.Type.OpenWitness.ST
+      - Data.Type.OpenWitness.Instance
+      - Data.Type.OpenWitness.Witnessed
+    other-modules: []
 
 tests:
     tests:
         source-dirs: test
         default-extensions:
-            - RankNTypes
-            - EmptyDataDecls
-            - GeneralizedNewtypeDeriving
-            - ScopedTypeVariables
-            - GADTs
-            - FlexibleContexts
-            - MultiParamTypeClasses
-            - TemplateHaskell
+          - RankNTypes
+          - EmptyDataDecls
+          - GeneralizedNewtypeDeriving
+          - ScopedTypeVariables
+          - GADTs
+          - FlexibleContexts
+          - MultiParamTypeClasses
+          - TemplateHaskell
         dependencies:
-            - base >= 4.15 && < 5
-            - mtl
-            - witness
-            - open-witness
-            - tasty
-            - tasty-hunit
+          - base >= 4.15 && < 5
+          - mtl
+          - witness
+          - open-witness
+          - tasty
+          - tasty-hunit
         main: Main.hs
         other-modules:
-            - Object
+          - Object
