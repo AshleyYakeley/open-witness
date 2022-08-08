@@ -21,13 +21,13 @@ import Control.Monad.Fix
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.State
 import Data.Type.OpenWitness
-import Data.Type.Witness.Specific.WitnessMap.Of
+import Data.Type.Witness.Specific.OrderedWitnessMap.Of
 import Prelude
 
-type ST s = StateT (WitnessMapOf (OpenWitness s)) (OW s)
+type ST s = StateT (OrderedWitnessMapOf (OpenWitness s)) (OW s)
 
 stToOW :: ST s a -> OW s a
-stToOW st = evalStateT st emptyWitnessMapOf
+stToOW st = evalStateT st emptyOrderedWitnessMapOf
 
 runST :: (forall s. ST s a) -> a
 runST st = runOW (stToOW st)
@@ -41,21 +41,21 @@ newSTRef :: a -> ST s (STRef s a)
 newSTRef a = do
     wit <- lift newOpenWitnessOW
     dict <- get
-    put (witnessMapOfAdd wit a dict)
+    put (orderedWitnessMapOfAdd wit a dict)
     return wit
 
 readSTRef :: STRef s a -> ST s a
 readSTRef key = do
     dict <- get
-    case witnessMapOfLookup key dict of
+    case orderedWitnessMapOfLookup key dict of
         Just a -> return a
         _ -> error "ref not found"
 
 writeSTRef :: forall s a. STRef s a -> a -> ST s ()
-writeSTRef key newa = modify (witnessMapOfReplace key newa)
+writeSTRef key newa = modify (orderedWitnessMapOfReplace key newa)
 
 modifySTRef :: forall s a. STRef s a -> (a -> a) -> ST s ()
-modifySTRef key amap = modify (witnessMapOfModify key amap)
+modifySTRef key amap = modify (orderedWitnessMapOfModify key amap)
 
 stToIO :: ST RealWorld a -> IO a
 stToIO = owToIO . stToOW
