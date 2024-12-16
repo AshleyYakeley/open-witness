@@ -10,7 +10,9 @@ import Data.IORef
 import Data.Type.OpenWitness
 import Data.Type.Witness
 import Prelude
+import Data.Kind
 
+type Witnessed :: forall k. (k -> Type) -> k -> Type
 type Witnessed = PairType IOWitness
 
 unWitnessed :: Witnessed f a -> f a

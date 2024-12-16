@@ -1,7 +1,7 @@
-resolver: lts-19.22
+resolver: lts-23.0
+packages: [.]
 ghc-options:
     "$locals": -Werror
 
 extra-deps:
-- countable-1.2
-- witness-0.6
+- witness-0.7

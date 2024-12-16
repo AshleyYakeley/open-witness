@@ -24,7 +24,7 @@ import Data.List ((\\), union)
 import Data.Traversable
 import Data.Type.Witness
 import Language.Haskell.TH hiding (Type)
-import qualified Language.Haskell.TH
+import Language.Haskell.TH qualified
 import Prelude
 import System.IO.Unsafe (unsafePerformIO)
 import System.Random
@@ -67,6 +67,7 @@ instance TestOrder (OpenWitness s) where
 data RealWorld
 
 -- | An 'OpenWitness' for 'IO'.
+type IOWitness :: forall k. k -> Type
 type IOWitness = OpenWitness RealWorld
 
 ioWitnessSource :: MVar Int64
@@ -84,9 +85,10 @@ type OWState = Int64
 
 -- | A runnable monad in which 'OpenWitness' values can be generated.
 -- The @s@ parameter plays the same role as it does in 'ST', preventing 'OpenWitness' values from one run being used in another.
+type OW :: forall k. k -> Type -> Type
 newtype OW s a =
     MkOW (State OWState a)
-    deriving (Functor, Applicative, Monad, MonadFix)
+    deriving newtype (Functor, Applicative, Monad, MonadFix)
 
 -- | Run an 'OW' computation.
 runOW :: forall a. (forall s. OW s a) -> a

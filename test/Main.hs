@@ -33,7 +33,7 @@ data Caught
     = NotCaught
     | IntCaught Int
     | StringCaught String
-    deriving (Eq, Show)
+    deriving stock (Eq, Show)
 
 getCaught :: IO a -> IO Caught
 getCaught f =
@@ -56,7 +56,7 @@ tests =
     testGroup
         "test"
         [ testST
-        , testCaught "return" NotCaught $ return "hello"
+        , testCaught "return" NotCaught $ return ("hello" :: String)
         , testCaught "throw intExn 3" (IntCaught 3) $ throw intExn 3
         , testCaught "throw stringExn text" (StringCaught "text") $ throw stringExn "text"
         , testCaught "throw intExn 67" (IntCaught 67) $ throw intExn 67

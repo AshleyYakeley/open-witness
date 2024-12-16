@@ -23,6 +23,7 @@ import Control.Monad.Trans.State
 import Data.Type.OpenWitness
 import Data.Type.Witness.Specific.OrderedWitnessMap.Of
 import Prelude
+import Data.Kind
 
 type ST s = StateT (OrderedWitnessMapOf (OpenWitness s)) (OW s)
 
@@ -35,6 +36,7 @@ runST st = runOW (stToOW st)
 fixST :: (a -> ST s a) -> ST s a
 fixST = mfix
 
+type STRef :: forall k. Type -> k -> Type
 type STRef s = OpenWitness s
 
 newSTRef :: a -> ST s (STRef s a)

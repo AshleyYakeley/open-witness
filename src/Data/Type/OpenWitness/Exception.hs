@@ -8,11 +8,10 @@ module Data.Type.OpenWitness.Exception
     , catch
     ) where
 
-import qualified Control.Exception as CE (Exception, catch, throw)
+import Control.Exception qualified as CE (Exception, catch, throw)
 import Data.Kind
 import Data.Type.OpenWitness
 import Data.Type.Witness
-import Data.Typeable
 import Language.Haskell.TH hiding (Type)
 import Prelude
 
@@ -25,7 +24,6 @@ instance TestEquality Exn where
 
 newtype ExnException =
     MkExnException (SomeOf Exn)
-    deriving (Typeable)
 
 -- | Template Haskell function to declare 'Exn' exception keys.
 declexn :: TypeQ -> Q Exp
