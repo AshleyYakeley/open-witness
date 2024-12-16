@@ -13,7 +13,7 @@ import Prelude
 import Data.Kind
 
 type Witnessed :: forall k. (k -> Type) -> k -> Type
-type Witnessed = PairType IOWitness
+type Witnessed @k = PairType @k IOWitness
 
 unWitnessed :: Witnessed f a -> f a
 unWitnessed (MkPairType _ fa) = fa
